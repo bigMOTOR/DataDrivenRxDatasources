@@ -7,25 +7,25 @@
 
 import UIKit
 
-protocol ModelledCell {
+public protocol ModelledCell {
   var cellModel: CellViewModel? { get set }
 }
 
-protocol CellViewModel {
+public protocol CellViewModel {
   var cellViewClass: CellType { get }
 }
 
-protocol Selectable {
+public protocol Selectable {
   var onSelected:(() -> Void)? { get }
 }
 
-protocol InfoTappable {
+public protocol InfoTappable {
   var onInfoTap:(() -> Void)? { get }
 }
 
-typealias CellViewModelWithActions = Selectable & InfoTappable
+public typealias CellViewModelWithActions = Selectable & InfoTappable
 
-protocol Sizable {
+public protocol Sizable {
   var estimatedHeight: CGFloat { get }
 }
 
@@ -35,7 +35,7 @@ extension Sizable {
   }
 }
 
-enum CellType {
+public enum CellType {
   case classType(UITableViewCell.Type)
   case nibType(name: String)
   case prototype(reuseId: String)

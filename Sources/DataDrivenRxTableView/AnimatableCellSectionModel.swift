@@ -8,9 +8,9 @@
 import Foundation
 import RxDataSources
 
-struct AnimatableCellSectionModel<Section: IdentifiableType>: AnimatableSectionModelType {
-  typealias Item = AnimatableCellViewModel
-  typealias Identity = Section.Identity
+public struct AnimatableCellSectionModel<Section: IdentifiableType>: AnimatableSectionModelType {
+  public typealias Item = AnimatableCellViewModel
+  public typealias Identity = Section.Identity
   
   public var model: Section
   public var items: [AnimatableCellViewModel]

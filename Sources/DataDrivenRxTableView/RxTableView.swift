@@ -12,7 +12,7 @@ import RxDataSources
 
 extension Reactive where Base: UITableView {
   // MARK: - ReloadDataSource
-  func bind<S: CustomStringConvertible>(sections: Driver<[AnyCellSectionModel<S>]>) -> Disposable {
+ public func bind<S: CustomStringConvertible>(sections: Driver<[AnyCellSectionModel<S>]>) -> Disposable {
     return CompositeDisposable(disposables: [
       sections
         .do(onNext: _cellRegistration)
@@ -23,7 +23,7 @@ extension Reactive where Base: UITableView {
   }
   
   // MARK: - CustomStringConvertible, Animatable
-  func bind<S: CustomStringConvertible>(sections: Driver<[AnimatableCellSectionModel<S>]>, animationConfiguration: AnimationConfiguration = AnimationConfiguration()) -> Disposable {
+ public func bind<S: CustomStringConvertible>(sections: Driver<[AnimatableCellSectionModel<S>]>, animationConfiguration: AnimationConfiguration = AnimationConfiguration()) -> Disposable {
     return CompositeDisposable(disposables: [
       sections
         .do(onNext: _cellRegistration)
@@ -34,7 +34,7 @@ extension Reactive where Base: UITableView {
   }
   
   // MARK: - Section, Animatable
-  func bind<S>(sections: Driver<[AnimatableCellSectionModel<S>]>, animationConfiguration: AnimationConfiguration = AnimationConfiguration()) -> Disposable {
+ public func bind<S>(sections: Driver<[AnimatableCellSectionModel<S>]>, animationConfiguration: AnimationConfiguration = AnimationConfiguration()) -> Disposable {
     
     let dataSource = RxTableViewSectionedAnimatedDataSource<AnimatableCellSectionModel<S>>(
       animationConfiguration: animationConfiguration,

@@ -8,8 +8,8 @@
 import Foundation
 import RxDataSources
 
-struct AnyCellSectionModel<Section>: SectionModelType {
-  typealias Item = AnyCellViewModel
+public struct AnyCellSectionModel<Section>: SectionModelType {
+  public typealias Item = AnyCellViewModel
   
   public var model: Section
   public var items: [AnyCellViewModel]
