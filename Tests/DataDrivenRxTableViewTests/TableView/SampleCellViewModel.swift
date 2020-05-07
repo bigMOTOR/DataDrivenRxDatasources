@@ -6,10 +6,9 @@
 //
 
 import Foundation
-import RxDataSources
 @testable import DataDrivenRxTableView
 
-struct SampleCellViewModel: Equatable, IdentifiableType {
+struct SampleCellViewModel: Equatable {
   let name: String
 }
 

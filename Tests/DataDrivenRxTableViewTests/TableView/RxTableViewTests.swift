@@ -4,7 +4,7 @@ import RxCocoa
 import RxDataSources
 @testable import DataDrivenRxTableView
 
-final class DataDrivenRxTableViewTests: XCTestCase {
+final class RxTableViewTests: XCTestCase {
   private var tableView: UITableView!
   private var bag: DisposeBag!
   
@@ -20,101 +20,126 @@ final class DataDrivenRxTableViewTests: XCTestCase {
     tableView = nil
   }
   
-  // MARK: - ReloadDataSource
-  // func bind<S: CustomStringConvertible>(sections: Driver<[AnyCellSectionModel<S>]>)
+  // MARK: - Reload
+  // func bind<S, I: CellViewModel>(sections: Driver<[SectionModel<S, I>]>) -> Disposable
+  
+  private typealias ReloadSectionViewModel = TableSectionModel<String>
+  
   func testCellCountOnReloadDataSource() {
-    typealias SectionViewModel = AnyCellSectionModel<String>
     let cellItems = [
       SampleCellViewModel(name: "Some Cell 1"),
       SampleCellViewModel(name: "Some Cell 2")
     ]
     
-    let sections: Driver<[SectionViewModel]> = .just([SectionViewModel(model: "Some Section", items: cellItems)])
-    tableView.rx.bind(sections: sections).disposed(by: bag)
+    let sections: Driver<[ReloadSectionViewModel]> = .just([ReloadSectionViewModel(model: "Some Section", items: cellItems)])
+    
+    tableView.rx
+      .bind(sections: sections)
+      .disposed(by: bag)
+    
     let cellsCount = tableView.dataSource?.tableView(tableView, numberOfRowsInSection: 0)
     XCTAssertEqual(cellsCount, 2)
   }
   
   func testSectionCountOnReloadDataSource() {
-    typealias SectionViewModel = AnyCellSectionModel<String>
-    
     let cellItems = [SampleCellViewModel(name: "Some Cell")]
     
-    let sections: Driver<[SectionViewModel]> = .just([
-      SectionViewModel(model: "Some Section 1", items: cellItems),
-      SectionViewModel(model: "Some Section 2", items: cellItems)
+    let sections: Driver<[ReloadSectionViewModel]> = .just([
+      ReloadSectionViewModel(model: "Some Section 1", items: cellItems),
+      ReloadSectionViewModel(model: "Some Section 2", items: cellItems)
     ])
     
-    tableView.rx.bind(sections: sections).disposed(by: bag)
+    tableView.rx
+      .bind(sections: sections)
+      .disposed(by: bag)
+    
     let numberOfSections = tableView.dataSource?.numberOfSections?(in: tableView)
     XCTAssertEqual(numberOfSections, 2)
   }
   
   func testCellValueOnReloadDataSource() {
-    typealias SectionViewModel = AnyCellSectionModel<String>
     let value = "Some Cell"
-    let sections: Driver<[SectionViewModel]> = .just([SectionViewModel(model: "Some Section", items: [SampleCellViewModel(name: value)])])
-    tableView.rx.bind(sections: sections).disposed(by: bag)
+    let sections: Driver<[ReloadSectionViewModel]> = .just([ReloadSectionViewModel(model: "Some Section", items: [SampleCellViewModel(name: value)])])
+    
+    tableView.rx
+      .bind(sections: sections)
+      .disposed(by: bag)
+    
     let cell = tableView.dataSource?.tableView(tableView, cellForRowAt: IndexPath(item: 0, section: 0)) as? SampleCell
     let cellModel = cell?.cellModel as? SampleCellViewModel
     XCTAssertEqual(cellModel?.name, value)
   }
   
   func testSectionNameOnReloadDataSource() {
-    typealias SectionViewModel = AnyCellSectionModel<String>
     let value = "Some Section"
-    let sections: Driver<[SectionViewModel]> = .just([SectionViewModel(model: value, items: [SampleCellViewModel(name: "Some Cell")])])
-    tableView.rx.bind(sections: sections).disposed(by: bag)
+    let sections: Driver<[ReloadSectionViewModel]> = .just([ReloadSectionViewModel(model: value, items: [SampleCellViewModel(name: "Some Cell")])])
+    
+    tableView.rx
+      .bind(sections: sections)
+      .disposed(by: bag)
+    
     let sectionTitle = tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: 0)
     XCTAssertEqual(sectionTitle, value)
   }
   
-  // MARK: - CustomStringConvertible, Animatable
-  // func bind<S: CustomStringConvertible>(sections: Driver<[AnimatableCellSectionModel<S>]>, animationConfiguration: AnimationConfiguration = AnimationConfiguration())
+  // MARK: - Animatable
+  // func bind<S, I: CellViewModel>(sections: Driver<[AnimatableSectionModel<S, I>]>, animationConfiguration: AnimationConfiguration = AnimationConfiguration()) -> Disposable
+  
+  private typealias AnimatedSectionViewModel = AnimatableTableSectionModel<String>
+  
   func testCellCountOnAnimatableDataSource() {
-    typealias SectionViewModel = AnimatableCellSectionModel<String>
-    
     let cellItems = [
       SampleCellViewModel(name: "Some Cell 1"),
       SampleCellViewModel(name: "Some Cell 2")
     ]
 
-    let sections: Driver<[SectionViewModel]> = .just([SectionViewModel(model: "Some Section", items: cellItems)])
-    tableView.rx.bind(sections: sections).disposed(by: bag)
+    let sections: Driver<[AnimatedSectionViewModel]> = .just([AnimatedSectionViewModel(model: "Some Section", items: cellItems)])
+    
+    tableView.rx
+      .bind(sections: sections)
+      .disposed(by: bag)
+    
     let cellsCount = tableView.dataSource?.tableView(tableView, numberOfRowsInSection: 0)
     XCTAssertEqual(cellsCount, 2)
   }
   
   func testSectionCountOnAnimatableDataSource() {
-    typealias SectionViewModel = AnimatableCellSectionModel<String>
-    
     let cellItems = [SampleCellViewModel(name: "Some Cell")]
-    
-    let sections: Driver<[SectionViewModel]> = .just([
-      SectionViewModel(model: "Some Section 1", items: cellItems),
-      SectionViewModel(model: "Some Section 2", items: cellItems)
+
+    let sections: Driver<[AnimatedSectionViewModel]> = .just([
+      AnimatedSectionViewModel(model: "Some Section 1", items: cellItems),
+      AnimatedSectionViewModel(model: "Some Section 2", items: cellItems)
     ])
     
-    tableView.rx.bind(sections: sections).disposed(by: bag)
+    tableView.rx
+      .bind(sections: sections)
+      .disposed(by: bag)
+    
     let numberOfSections = tableView.dataSource?.numberOfSections?(in: tableView)
     XCTAssertEqual(numberOfSections, 2)
   }
   
   func testCellValueOnAnimatableDataSource() {
-    typealias SectionViewModel = AnimatableCellSectionModel<String>
     let value = "Some Cell"
-    let sections: Driver<[SectionViewModel]> = .just([SectionViewModel(model: "Some Section", items: [SampleCellViewModel(name: value)])])
-    tableView.rx.bind(sections: sections).disposed(by: bag)
+    let sections: Driver<[AnimatedSectionViewModel]> = .just([AnimatedSectionViewModel(model: "Some Section", items: [SampleCellViewModel(name: value)])])
+    
+    tableView.rx
+      .bind(sections: sections)
+      .disposed(by: bag)
+    
     let cell = tableView.dataSource?.tableView(tableView, cellForRowAt: IndexPath(item: 0, section: 0)) as? SampleCell
     let cellModel = cell?.cellModel as? SampleCellViewModel
     XCTAssertEqual(cellModel?.name, value)
   }
   
   func testStringSectionNameOnAnimatableDataSourceGenerateName() {
-    typealias SectionViewModel = AnimatableCellSectionModel<String>
     let value = "Some Section"
-    let sections: Driver<[SectionViewModel]> = .just([SectionViewModel(model: value, items: [SampleCellViewModel(name: "Some Cell")])])
-    tableView.rx.bind(sections: sections).disposed(by: bag)
+    let sections: Driver<[AnimatedSectionViewModel]> = .just([AnimatedSectionViewModel(model: value, items: [SampleCellViewModel(name: "Some Cell")])])
+    
+    tableView.rx
+      .bind(sections: sections)
+      .disposed(by: bag)
+    
     let sectionTitle = tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: 0)
     XCTAssertEqual(sectionTitle, value)
   }
@@ -125,19 +150,23 @@ final class DataDrivenRxTableViewTests: XCTestCase {
     struct SomeObject: IdentifiableType {
       let identity: UUID
     }
+
+    typealias AnimatedSectionViewModel = AnimatableTableSectionModel<SomeObject>
     
-    typealias SectionViewModel = AnimatableCellSectionModel<SomeObject>
     let value = "Some Cell"
-    let sections: Driver<[SectionViewModel]> = .just([SectionViewModel(model: SomeObject(identity: UUID()), items: [SampleCellViewModel(name: value)])])
-    tableView.rx.bind(sections: sections).disposed(by: bag)
-    let sectionTitle = tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: 0)
+    let sections: Driver<[AnimatedSectionViewModel]> = .just([AnimatedSectionViewModel(model: SomeObject(identity: UUID()), items: [SampleCellViewModel(name: value)])])
     
+    tableView.rx
+      .bind(sections: sections)
+      .disposed(by: bag)
+
     // Cell
     let cell = tableView.dataSource?.tableView(tableView, cellForRowAt: IndexPath(item: 0, section: 0)) as? SampleCell
     let cellModel = cell?.cellModel as? SampleCellViewModel
     XCTAssertEqual(cellModel?.name, value)
-    
+
     // Section has no title
+    let sectionTitle = tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: 0)
     XCTAssertNil(sectionTitle)
   }
   

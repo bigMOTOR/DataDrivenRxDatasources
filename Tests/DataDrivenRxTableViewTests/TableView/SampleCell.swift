@@ -16,8 +16,7 @@ final class SampleCell: UITableViewCell, ModelledCell {
       guard let vModel = cellModel as? SampleCellViewModel else { return }
       title = vModel.name
     }
-  }
-    
+  }   
 }
 
 extension SampleCellViewModel: CellViewModel {

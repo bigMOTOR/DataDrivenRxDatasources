@@ -24,7 +24,8 @@ data
                         DESC
   s.homepage         = "https://github.com/bigMOTOR/DataDrivenRxTableView"
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.authors          = { "Nikolay Fiantcev" => "to.bigmotor@gmail.com",                                          "Misha Markin" => "shire8bit@gmial.com" }
+  s.authors          = { "Nikolay Fiantcev" => "to.bigmotor@gmail.com",
+                         "Misha Markin" => "shire8bit@gmial.com" }
   s.source           = { :git => "https://github.com/bigMOTOR/DataDrivenRxTableView.git", :tag => s.version.to_s }
   s.swift_version    = '5.0'
   
