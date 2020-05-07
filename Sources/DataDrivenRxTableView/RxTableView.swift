@@ -11,6 +11,7 @@ import RxCocoa
 import RxDataSources
 
 extension Reactive where Base: UITableView {
+  // MARK: - ReloadDataSource
   func bind<S: CustomStringConvertible>(sections: Driver<[AnyCellSectionModel<S>]>) -> Disposable {
     return CompositeDisposable(disposables: [
       sections
