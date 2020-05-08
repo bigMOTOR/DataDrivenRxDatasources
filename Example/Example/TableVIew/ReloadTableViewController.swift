@@ -1,5 +1,5 @@
 //
-//  StaticCellsViewController.swift
+//  ReloadTableViewController.swift
 //  Example
 //
 //  Created by Dmitriy on 5/7/20.
@@ -10,13 +10,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class StaticCellsViewController: UITableViewController {
-  
-  var viewModel = StaticCellsViewModel()
+class ReloadTableViewController: UITableViewController {
   private let _bag = DisposeBag()
+  
+  var viewModel: ReloadTableViewModel!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    tableView.delegate = nil
     tableView.dataSource = nil
     tableView.rx
       .bind(sections: viewModel.sections)

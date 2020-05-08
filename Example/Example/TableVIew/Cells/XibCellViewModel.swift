@@ -9,11 +9,11 @@
 import Foundation
 import RxDataSources
 
-struct StaticCellViewModel {
+struct XibCellViewModel {
   let value: String
 }
 
-extension StaticCellViewModel: IdentifiableType {
+extension XibCellViewModel: IdentifiableType {
   var identity: Int {
     return value.hash
   }
