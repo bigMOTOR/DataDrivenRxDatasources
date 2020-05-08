@@ -34,7 +34,8 @@ data
   s.ios.deployment_target = '10.0'
   s.tvos.deployment_target = '10.0'
 
-  s.source_files = 'Sources/DataDrivenRxTableView/*.swift'
+  s.source_files = "Sources/DataDrivenRxTableView/*.swift", "Sources/DataDrivenRxTableView/**/*.swift"
+                     
   s.dependency 'RxSwift', '~> 5.1.0'
   s.dependency 'RxDataSources', '~> 4.0.1'
 end
