@@ -8,14 +8,18 @@
 
 import Foundation
 import RxDataSources
+import DataDrivenRxTableView
 
 struct XibCellViewModel {
   let value: String
 }
 
-extension XibCellViewModel: IdentifiableType {
+extension XibCellViewModel: IdentifiableCellViewModel {
   var identity: Int {
     return value.hash
   }
+  func isEqual(to: IdentifiableCellViewModel) -> Bool {
+    guard let to = to as? XibCellViewModel else { return false }
+    return value == to.value
+  }
 }
-

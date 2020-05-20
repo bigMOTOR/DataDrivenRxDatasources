@@ -15,8 +15,13 @@ struct ProtoTypeCellViewModel: InfoTappableType {
   let onInfoTap: (() -> Void)?
 }
 
-extension ProtoTypeCellViewModel: IdentifiableType {
+extension ProtoTypeCellViewModel: IdentifiableCellViewModel {
   var identity: Int {
     return value.hash
   }
+  func isEqual(to: IdentifiableCellViewModel) -> Bool {
+    guard let to = to as? ProtoTypeCellViewModel else { return false }
+    return value == to.value
+  }
 }
+

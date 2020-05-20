@@ -15,7 +15,11 @@ struct ClassCellViewModel: SelectableType {
   let onSelected: (() -> Void)?
 }
 
-extension ClassCellViewModel: IdentifiableType {
+extension ClassCellViewModel: IdentifiableCellViewModel {
+  func isEqual(to: IdentifiableCellViewModel) -> Bool {
+    guard let to = to as? ClassCellViewModel else { return false }
+    return value == to.value
+  }
   var identity: Int {
     return value.hash
   }

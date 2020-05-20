@@ -7,15 +7,22 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class AnimatableTableViewController: UITableViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-      tableView.delegate = nil
-      tableView.dataSource = nil
-    }
-
-
-
+  private let _bag = DisposeBag()
+  
+  var viewModel: AnimatableViewModel!
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    tableView.dataSource = nil
+    tableView.rx
+      .bind(sections: viewModel.sections)
+      .disposed(by: _bag)
+  }
+  @IBAction func insertNewRow() {
+    viewModel.insertRow()
+  }
 }
