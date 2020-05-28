@@ -2,11 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "DataDrivenRxTableView",
-        "repositoryURL": "https://github.com/bigMOTOR/DataDrivenRxTableView.git",
+        "package": "DataDrivenRxDatasources",
+        "repositoryURL": "https://github.com/bigMOTOR/DataDrivenRxDatasources",
         "state": {
           "branch": "master",
-          "revision": "4b50e69e4e0a5f8180b4d0114a48345abd68e6f2",
+          "revision": "c4bf5bf7971c3a3fd586d3e895ec185a314e6a5d",
           "version": null
         }
       },

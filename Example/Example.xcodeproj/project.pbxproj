@@ -35,11 +35,11 @@
 		2CFFF29F246BE0C000DA5154 /* XibCollectionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFFF29E246BE0C000DA5154 /* XibCollectionCellViewModel.swift */; };
 		870C12ED2466146F00A3E852 /* ClassCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12EC2466146F00A3E852 /* ClassCellViewModel.swift */; };
 		870C12EF2466149100A3E852 /* ClassCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12EE2466149100A3E852 /* ClassCell.swift */; };
-		870C12F32466161500A3E852 /* DataDrivenRxTableView in Frameworks */ = {isa = PBXBuildFile; productRef = 2CC137A4246421E500CC6C27 /* DataDrivenRxTableView */; };
 		870C12F5246616B400A3E852 /* ProtoTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12F4246616B400A3E852 /* ProtoTypeCell.swift */; };
 		870C12F7246616C400A3E852 /* ProtoTypeCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12F6246616C400A3E852 /* ProtoTypeCellViewModel.swift */; };
 		870C12F9246619CC00A3E852 /* MainTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12F8246619CC00A3E852 /* MainTableViewModel.swift */; };
 		870C12FB24661A1C00A3E852 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12FA24661A1C00A3E852 /* MainTableViewController.swift */; };
+		D36D610E248009C0003BA5C5 /* DataDrivenRxDatasources in Frameworks */ = {isa = PBXBuildFile; productRef = D36D610D248009C0003BA5C5 /* DataDrivenRxDatasources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				870C12F32466161500A3E852 /* DataDrivenRxTableView in Frameworks */,
+				D36D610E248009C0003BA5C5 /* DataDrivenRxDatasources in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,7 +204,7 @@
 			);
 			name = Example;
 			packageProductDependencies = (
-				2CC137A4246421E500CC6C27 /* DataDrivenRxTableView */,
+				D36D610D248009C0003BA5C5 /* DataDrivenRxDatasources */,
 			);
 			productName = Example;
 			productReference = 2CC137872464209F00CC6C27 /* Example.app */;
@@ -235,7 +235,7 @@
 			);
 			mainGroup = 2CC1377E2464209F00CC6C27;
 			packageReferences = (
-				2CC137A3246421E500CC6C27 /* XCRemoteSwiftPackageReference "DataDrivenRxTableView" */,
+				D36D610C248009C0003BA5C5 /* XCRemoteSwiftPackageReference "DataDrivenRxDatasources" */,
 			);
 			productRefGroup = 2CC137882464209F00CC6C27 /* Products */;
 			projectDirPath = "";
@@ -490,9 +490,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2CC137A3246421E500CC6C27 /* XCRemoteSwiftPackageReference "DataDrivenRxTableView" */ = {
+		D36D610C248009C0003BA5C5 /* XCRemoteSwiftPackageReference "DataDrivenRxDatasources" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bigMOTOR/DataDrivenRxTableView.git";
+			repositoryURL = "https://github.com/bigMOTOR/DataDrivenRxDatasources";
 			requirement = {
 				branch = master;
 				kind = branch;
@@ -501,10 +501,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2CC137A4246421E500CC6C27 /* DataDrivenRxTableView */ = {
+		D36D610D248009C0003BA5C5 /* DataDrivenRxDatasources */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2CC137A3246421E500CC6C27 /* XCRemoteSwiftPackageReference "DataDrivenRxTableView" */;
-			productName = DataDrivenRxTableView;
+			package = D36D610C248009C0003BA5C5 /* XCRemoteSwiftPackageReference "DataDrivenRxDatasources" */;
+			productName = DataDrivenRxDatasources;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
