@@ -32,7 +32,7 @@ let cellItems = [
       SampleCellViewModel(name: "Name 2")
     ]
   
-let sections: Driver<[AnimatableTableSectionModel<String>]> = .just([ReloadSectionViewModel(model: "Some Section", items: cellItems)])
+let sections: Driver<[AnimatableTableSectionModel<String>]> = .just([SectionViewModel(model: "Some Section", items: cellItems)])
     
 tableView.rx
   .bind(sections: sections)
@@ -48,7 +48,7 @@ Please take a look at our ‘Example’ project to get more use cases.
 
 [Misha Markin](mailto:shire8bit@gmial.com)
 
-[Dovhan Dmitry](mailto:montazher@gmail.com)
+[Dmytro Dovhan](mailto:montazher@gmail.com)
 
 ## Contributing
 
