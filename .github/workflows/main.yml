@@ -23,4 +23,4 @@ jobs:
 
     # Runs a set of commands using the runners shell
     - name: Run tests
-      run: xcodebuild test -destination 'name=iPhone 11' -scheme 'DataDrivenRxTableView-Package'
+      run: xcodebuild test -destination 'name=iPhone 11' -scheme 'DataDrivenRxDatasources-Package'
