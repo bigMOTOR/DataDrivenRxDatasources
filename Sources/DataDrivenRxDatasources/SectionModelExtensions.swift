@@ -26,7 +26,7 @@ public protocol SectionHeaderTitleType {
 
 // Protocol for viewModel that handles adding section header
 public protocol SectionFooterTitleType {
-  var sectionFooterTitle: String { get }
+  var sectionFooterTitle: String? { get }
 }
 
 extension String: SectionHeaderTitleType {
