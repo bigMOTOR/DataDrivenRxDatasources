@@ -46,7 +46,7 @@ Please take a look at our ‘Example’ project to get more use cases.
 
 [Nikolay Fiantsev](mailto:to.bigmotor@gmail.com)
 
-[Misha Markin](mailto:shire8bit@gmial.com)
+[Misha Markin](mailto:shire8bit@gmail.com)
 
 [Dmytro Dovhan](mailto:montazher@gmail.com)
 
