@@ -34,7 +34,7 @@ tableView.rx
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.authors          = { "Dmytro Makarenko" => "dmitevmak@gmail.com",
                          "Nikolay Fiantsev" => "to.bigmotor@gmail.com",
-                         "Misha Markin" => "shire8bit@gmial.com",
+                         "Misha Markin" => "shire8bit@gmail.com",
                          "Dmytro Dovhan" => "montazher@gmail.com" }
   s.source           = { :git => "https://github.com/bigMOTOR/DataDrivenRxDatasources.git", :tag => s.version.to_s }
   s.swift_version    = '5.0'
