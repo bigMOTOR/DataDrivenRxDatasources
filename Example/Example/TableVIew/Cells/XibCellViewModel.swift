@@ -8,7 +8,7 @@
 
 import Foundation
 import RxDataSources
-import DataDrivenRxTableView
+import DataDrivenRxDatasources
 
 struct XibCellViewModel {
   let value: String

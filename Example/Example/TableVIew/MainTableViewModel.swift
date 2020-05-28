@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import DataDrivenRxTableView
+import DataDrivenRxDatasources
 
 struct MainTableViewModel {
   let sections: Driver<[TableSectionModel<String>]>

@@ -1,6 +1,6 @@
-# DataDrivenRxTableView
+# DataDrivenRxDatasources
 
-DataDrivenRxTableView - MVVM abstraction boilerplate code over RxDataSources.
+DataDrivenRxDatasources - MVVM abstraction boilerplate code over RxDataSources.
 
 The standard approach to managing table views with data sources has several flaws:
 - Repeated boilerplate code - data source and delegate methods, cell registration, etc.
@@ -15,12 +15,12 @@ Data-driven is a programming paradigm in which the program code, although separa
 
 <details>
 <summary>Installation</summary>
-DataDrivenRxTableView available via: 
+DataDrivenRxDatasources available via: 
     
-- Swift Package Manager by url: [https://github.com/bigMOTOR/DataDrivenRxTableView.git](https://github.com/bigMOTOR/DataDrivenRxTableView.git)
+- Swift Package Manager by url: [https://github.com/bigMOTOR/DataDrivenRxDatasources.git](https://github.com/bigMOTOR/DataDrivenRxDatasources.git)
 
 - Podfile: 
-    pod 'DataDrivenRxTableView'
+    pod 'DataDrivenRxDatasources'
 </details>
 
 ## Getting Started
@@ -57,4 +57,4 @@ Please take a look at our ‘Example’ project to get more use cases.
 
 ## License
 
-DataDrivenRxTableView is available under the MIT license. See the LICENSE file for more info.
+DataDrivenRxDatasources is available under the MIT license. See the LICENSE file for more info.

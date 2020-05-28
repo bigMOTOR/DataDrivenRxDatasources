@@ -1,7 +1,7 @@
 import XCTest
 
-import DataDrivenRxTableViewTests
+import DataDrivenRxDatasourcesTests
 
 var tests = [XCTestCaseEntry]()
-tests += DataDrivenRxTableViewTests.allTests()
+tests += DataDrivenRxDatasourcesTests.allTests()
 XCTMain(tests)

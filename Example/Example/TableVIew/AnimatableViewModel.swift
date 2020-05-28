@@ -9,7 +9,7 @@
 import Foundation
 import RxCocoa
 import RxDataSources
-import DataDrivenRxTableView
+import DataDrivenRxDatasources
 
 struct AnimatableViewModel {
 

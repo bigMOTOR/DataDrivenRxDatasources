@@ -2,7 +2,7 @@ import XCTest
 import RxSwift
 import RxCocoa
 import RxDataSources
-@testable import DataDrivenRxTableView
+@testable import DataDrivenRxDatasources
 
 final class RxTableViewTests: XCTestCase {
   private var tableView: UITableView!

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import DataDrivenRxTableView
+import DataDrivenRxDatasources
 
 class ClassCollectionCell: UICollectionViewCell, ModelledCollectionCell {
   private var _valueLabel: UILabel!

@@ -8,7 +8,7 @@
 
 import Foundation
 import RxDataSources
-import DataDrivenRxTableView
+import DataDrivenRxDatasources
 
 struct ClassCollectionCellViewModel: SelectableType {
   let value: String

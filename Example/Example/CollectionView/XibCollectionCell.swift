@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import DataDrivenRxTableView
+import DataDrivenRxDatasources
 
 
 class XibCollectionCell: UICollectionViewCell, ModelledCollectionCell {

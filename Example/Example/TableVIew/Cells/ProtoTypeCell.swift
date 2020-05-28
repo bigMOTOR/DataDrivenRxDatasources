@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import DataDrivenRxTableView
+import DataDrivenRxDatasources
 
 final class ProtoTypeCell: UITableViewCell, ModelledCell {
   

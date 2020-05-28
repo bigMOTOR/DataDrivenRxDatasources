@@ -6,7 +6,7 @@
 //
 
 import UIKit
-@testable import DataDrivenRxTableView
+@testable import DataDrivenRxDatasources
 
 final class SampleCollectionCell: UICollectionViewCell, ModelledCollectionCell {
   var title: String!
