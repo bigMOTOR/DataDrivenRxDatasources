@@ -89,12 +89,22 @@ private func _reloadDataSource<S>() -> RxTableViewSectionedReloadDataSource<Tabl
 }
 
 private func _animatableDataSource<S>(animationConfiguration: AnimationConfiguration) -> RxTableViewSectionedAnimatedDataSource<AnimatableTableSectionModel<S>> {
-  return RxTableViewSectionedAnimatedDataSource<AnimatableTableSectionModel<S>>(
-    animationConfiguration: animationConfiguration,
-    configureCell: { (_, tv, indexPath, model) in _configureCell(tv: tv, indexPath: indexPath, model: model) },
-    titleForHeaderInSection: _titleForHeaderInSection,
-    titleForFooterInSection: _titleForFooterInSection
-  )
+  switch (animationConfiguration.insertAnimation, animationConfiguration.reloadAnimation, animationConfiguration.deleteAnimation) {
+  case (.none, .none, .none):
+    return RxTableViewSectionedNonAnimatedDataSource<AnimatableTableSectionModel<S>>(
+      animationConfiguration: animationConfiguration,
+      configureCell: { (_, tv, indexPath, model) in _configureCell(tv: tv, indexPath: indexPath, model: model) },
+      titleForHeaderInSection: _titleForHeaderInSection,
+      titleForFooterInSection: _titleForFooterInSection
+    )
+  default:
+    return RxTableViewSectionedAnimatedDataSource<AnimatableTableSectionModel<S>>(
+      animationConfiguration: animationConfiguration,
+      configureCell: { (_, tv, indexPath, model) in _configureCell(tv: tv, indexPath: indexPath, model: model) },
+      titleForHeaderInSection: _titleForHeaderInSection,
+      titleForFooterInSection: _titleForFooterInSection
+    )
+  }
 }
 
 // MARK: - Configurations
@@ -107,6 +117,7 @@ private func _titleForFooterInSection<S: SectionModelType & ModelType>(dataSourc
   guard let model = dataSource.sectionModels[index].model as? SectionFooterTitleType else { return nil }
   return model.sectionFooterTitle
 }
+
 private func _configureCell<C: CellViewModelWrapper>(tv: UITableView, indexPath: IndexPath, model: C) -> UITableViewCell {
   let cell = tv.dequeueReusableCell(withIdentifier: model.base.cellViewClass.identifier, for: indexPath)
   guard var modeledCell = cell as? ModelledCell else { return cell }
@@ -123,5 +134,14 @@ private final class TableViewControllerDelegateProxy: NSObject, UITableViewDeleg
       return model.onSelected != nil
     }
     return false
+  }
+}
+
+// MARK: - Data Source that disables animation on table view updates (history of this: https://github.com/RxSwiftCommunity/RxDataSources/issues/90)
+final class RxTableViewSectionedNonAnimatedDataSource<Section: AnimatableSectionModelType>: RxTableViewSectionedAnimatedDataSource<Section> {
+  override func tableView(_ tableView: UITableView, observedEvent: Event<Element>) {
+    UIView.performWithoutAnimation {
+      super.tableView(tableView, observedEvent: observedEvent)
+    }
   }
 }

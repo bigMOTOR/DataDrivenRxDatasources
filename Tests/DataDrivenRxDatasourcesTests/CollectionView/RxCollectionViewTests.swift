@@ -120,6 +120,17 @@ final class RxCollectionViewTests: XCTestCase {
     XCTAssertEqual(cellModel?.name, value)
   }
   
+  func testSetAnimationToNoneUseNonAnimatedDataSource() {
+    let value = "Some Cell"
+    let sections: Driver<[AnimatedSectionViewModel]> = .just([AnimatedSectionViewModel(model: "Some Section", items: [SampleCollectionCellViewModel(name: value)])])
+    
+    collectionView.rx
+      .bind(sections: sections, animationConfiguration: AnimationConfiguration(insertAnimation: .none, reloadAnimation: .none, deleteAnimation: .none))
+      .disposed(by: bag)
+    
+    XCTAssertTrue(collectionView.rx.dataSource.forwardToDelegate()?.isKind(of: RxCollectionViewSectionedNonAnimatedDataSource<AnimatedSectionViewModel>.self) ?? false)
+  }
+  
   static var allTests = [
     ("testCellCountOnReloadDataSource", testCellCountOnReloadDataSource),
     ("testSectionCountOnReloadDataSource", testSectionCountOnReloadDataSource),
@@ -127,5 +138,6 @@ final class RxCollectionViewTests: XCTestCase {
     ("testCellCountOnAnimatableDataSource", testCellCountOnAnimatableDataSource),
     ("testSectionCountOnAnimatableDataSource", testSectionCountOnAnimatableDataSource),
     ("testCellValueOnAnimatableDataSource", testCellValueOnAnimatableDataSource),
+    ("testSetAnimationToNoneUseNonAnimatedDataSource", testSetAnimationToNoneUseNonAnimatedDataSource)
   ]
 }

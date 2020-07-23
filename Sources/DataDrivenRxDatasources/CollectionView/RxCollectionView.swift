@@ -78,10 +78,18 @@ private func _reloadDataSource<S>() -> RxCollectionViewSectionedReloadDataSource
 }
 
 private func _animatableDataSource<S>(animationConfiguration: AnimationConfiguration) -> RxCollectionViewSectionedAnimatedDataSource<AnimatableCollectionSectionModel<S>> {
-  return RxCollectionViewSectionedAnimatedDataSource<AnimatableCollectionSectionModel<S>>(
-    animationConfiguration: animationConfiguration,
-    configureCell: { (_, cv, indexPath, model) in _configureCell(cv: cv, indexPath: indexPath, model: model) }
-  )
+  switch (animationConfiguration.insertAnimation, animationConfiguration.reloadAnimation, animationConfiguration.deleteAnimation) {
+  case (.none, .none, .none):
+    return RxCollectionViewSectionedNonAnimatedDataSource<AnimatableCollectionSectionModel<S>>(
+      animationConfiguration: animationConfiguration,
+      configureCell: { (_, cv, indexPath, model) in _configureCell(cv: cv, indexPath: indexPath, model: model) }
+    )
+  default:
+    return RxCollectionViewSectionedAnimatedDataSource<AnimatableCollectionSectionModel<S>>(
+      animationConfiguration: animationConfiguration,
+      configureCell: { (_, cv, indexPath, model) in _configureCell(cv: cv, indexPath: indexPath, model: model) }
+    )
+  }
 }
 
 // MARK: - Configurations
@@ -92,7 +100,7 @@ private func _configureCell<C: CollectionCellViewModelWrapper>(cv: UICollectionV
   return cell
 }
 
-// MARK: - TableViewControllerDelegateProxy
+// MARK: - CollectionViewControllerDelegateProxy
 private final class CollectionViewControllerDelegateProxy: NSObject, UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
     if
@@ -104,3 +112,11 @@ private final class CollectionViewControllerDelegateProxy: NSObject, UICollectio
   }
 }
 
+// MARK: - Data Source that disables animation on table view updates (history of this: https://github.com/RxSwiftCommunity/RxDataSources/issues/90)
+final class RxCollectionViewSectionedNonAnimatedDataSource<Section: AnimatableSectionModelType>: RxCollectionViewSectionedAnimatedDataSource<Section> {
+  override func collectionView(_ collectionView: UICollectionView, observedEvent: Event<Element>) {
+    UIView.performWithoutAnimation {
+      super.collectionView(collectionView, observedEvent: observedEvent)
+    }
+  }
+}
