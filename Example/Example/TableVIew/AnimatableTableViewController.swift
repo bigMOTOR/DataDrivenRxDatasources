@@ -22,6 +22,7 @@ class AnimatableTableViewController: UITableViewController {
       .bind(sections: viewModel.sections)
       .disposed(by: _bag)
   }
+  
   @IBAction func insertNewRow() {
     viewModel.insertRow()
   }

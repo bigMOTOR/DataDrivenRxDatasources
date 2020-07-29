@@ -44,3 +44,15 @@ public protocol SelectableType {
 public protocol InfoTappableType {
   var onInfoTap:(() -> Void)? { get }
 }
+
+// Protocol for viewModel that handles cell editing/deleting
+public protocol EditableType {
+  var canEdit: Bool { get }
+  var onDeleted:(() -> Void)? { get }
+}
+
+extension EditableType {
+  public var canEdit: Bool {
+    return true
+  }
+}

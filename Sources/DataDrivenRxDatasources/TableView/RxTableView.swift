@@ -43,6 +43,12 @@ extension Reactive where Base: UITableView {
           (model.base as? SelectableType)?.onSelected?()
         }),
       
+      // Cell deletion
+      modelDeleted(CellViewModelWrapper.self)
+        .subscribe(onNext: { model in
+          guard let editableModel = model.base as? EditableType else { return }
+          editableModel.onDeleted?()
+        }),
       
       // Accessory selections
       itemAccessoryButtonTapped
@@ -84,7 +90,8 @@ private func _reloadDataSource<S>() -> RxTableViewSectionedReloadDataSource<Tabl
   return RxTableViewSectionedReloadDataSource<TableSectionModel<S>>(
     configureCell: { (_, tv, indexPath, model) in _configureCell(tv: tv, indexPath: indexPath, model: model) },
     titleForHeaderInSection: _titleForHeaderInSection,
-    titleForFooterInSection: _titleForFooterInSection
+    titleForFooterInSection: _titleForFooterInSection,
+    canEditRowAtIndexPath: _canEditRowAtIndexPath
   )
 }
 
@@ -93,7 +100,8 @@ private func _animatableDataSource<S>(animationConfiguration: AnimationConfigura
     animationConfiguration: animationConfiguration,
     configureCell: { (_, tv, indexPath, model) in _configureCell(tv: tv, indexPath: indexPath, model: model) },
     titleForHeaderInSection: _titleForHeaderInSection,
-    titleForFooterInSection: _titleForFooterInSection
+    titleForFooterInSection: _titleForFooterInSection,
+    canEditRowAtIndexPath: _canEditRowAtIndexPath
   )
 }
 
@@ -107,6 +115,16 @@ private func _titleForFooterInSection<S: SectionModelType & ModelType>(dataSourc
   guard let model = dataSource.sectionModels[index].model as? SectionFooterTitleType else { return nil }
   return model.sectionFooterTitle
 }
+
+private func _canEditRowAtIndexPath<S: SectionModelType & ModelType>(dataSource: TableViewSectionedDataSource<S>, indexPath: IndexPath) -> Bool {
+  if
+    let model = try? dataSource.model(at: indexPath) as? CellViewModelWrapper,
+    let editableModel = model.base as? EditableType {
+    return editableModel.canEdit
+  }
+  return false
+}
+
 private func _configureCell<C: CellViewModelWrapper>(tv: UITableView, indexPath: IndexPath, model: C) -> UITableViewCell {
   let cell = tv.dequeueReusableCell(withIdentifier: model.base.cellViewClass.identifier, for: indexPath)
   guard var modeledCell = cell as? ModelledCell else { return cell }

@@ -12,28 +12,41 @@ import RxDataSources
 import DataDrivenRxDatasources
 
 struct AnimatableViewModel {
-
   let sections: Driver<[AnimatableTableSectionModel<String>]>
-  let section = BehaviorRelay<[IdentifiableCellViewModel]>(value: [
-    XibCellViewModel(value: "1"),
-    ClassCellViewModel(value: "2", onSelected: { print("cell selected") }),
-    ProtoTypeCellViewModel(value: "3", onInfoTap: { print("cell info tapped") }),
-  ])
+  let _repository: SomeRepository
   
-  init() {
-    sections = section
-      .map { [AnimatableTableSectionModel(model: "", items: $0)] }
+  init(repository: SomeRepository = SomeRepository()) {
+    _repository = repository
+    sections = _repository.models
+      .map { [AnimatableTableSectionModel(model: "", items: $0.map(_cellViewModel(repository.remove)))] }
       .asDriver(onErrorJustReturn: [])
   }
   
   func insertRow() {
-    section.add(element: provideRandomCell())
-  }
-  
-  private func provideRandomCell() -> IdentifiableCellViewModel {
-    let number = "\(section.value.count + 1)"
-    return [XibCellViewModel(value: number),
-            ClassCellViewModel(value: number, onSelected: { print("cell selected") }),
-            ProtoTypeCellViewModel(value: number, onInfoTap: { print("cell info tapped") })][Int.random(in: (0...2))]
+    _repository.add(provideRandomCell())
   }
 }
+
+private func provideRandomCell() -> SomeModel {
+  let number = UUID().uuidString
+  return [
+    SomeModel.xibType(number),
+    SomeModel.classType(number),
+    SomeModel.protoType(number),
+  ][Int.random(in: (0...2))]
+}
+
+private func _cellViewModel(_ deleteAction: @escaping (SomeModel) -> Void) -> (SomeModel) -> IdentifiableCellViewModel {
+  return { model in
+    switch model {
+    case .xibType(let id):
+      return XibCellViewModel(value: id, onDeleted: { deleteAction(model) })
+    case .classType(let id):
+      return ClassCellViewModel(value: id, onSelected: { print("cell selected") })
+    case .protoType(let id):
+      return ProtoTypeCellViewModel(value: id, onInfoTap: { print("cell info tapped") })
+    }
+  }
+}
+
+

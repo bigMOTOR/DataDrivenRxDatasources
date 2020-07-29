@@ -39,6 +39,7 @@
 		870C12F7246616C400A3E852 /* ProtoTypeCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12F6246616C400A3E852 /* ProtoTypeCellViewModel.swift */; };
 		870C12F9246619CC00A3E852 /* MainTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12F8246619CC00A3E852 /* MainTableViewModel.swift */; };
 		870C12FB24661A1C00A3E852 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12FA24661A1C00A3E852 /* MainTableViewController.swift */; };
+		8764BA6524D1984800106664 /* SomeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8764BA6424D1984800106664 /* SomeRepository.swift */; };
 		D36D610E248009C0003BA5C5 /* DataDrivenRxDatasources in Frameworks */ = {isa = PBXBuildFile; productRef = D36D610D248009C0003BA5C5 /* DataDrivenRxDatasources */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		870C12F6246616C400A3E852 /* ProtoTypeCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoTypeCellViewModel.swift; sourceTree = "<group>"; };
 		870C12F8246619CC00A3E852 /* MainTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewModel.swift; sourceTree = "<group>"; };
 		870C12FA24661A1C00A3E852 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
+		8764BA6424D1984800106664 /* SomeRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SomeRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				870C12F8246619CC00A3E852 /* MainTableViewModel.swift */,
 				2CC137A62464259A00CC6C27 /* ReloadTableViewController.swift */,
 				2CC137A824642D7500CC6C27 /* ReloadTableViewModel.swift */,
+				8764BA6424D1984800106664 /* SomeRepository.swift */,
 			);
 			path = TableVIew;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 				870C12FB24661A1C00A3E852 /* MainTableViewController.swift in Sources */,
 				2CC1378D2464209F00CC6C27 /* SceneDelegate.swift in Sources */,
 				2C4EFA86246D2F9800E6E469 /* ClassCollectionCellViewModel.swift in Sources */,
+				8764BA6524D1984800106664 /* SomeRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
