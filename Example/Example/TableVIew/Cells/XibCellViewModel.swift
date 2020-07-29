@@ -10,14 +10,16 @@ import Foundation
 import RxDataSources
 import DataDrivenRxDatasources
 
-struct XibCellViewModel {
+struct XibCellViewModel: EditableType {
   let value: String
+  let onDeleted: (() -> Void)?
 }
 
 extension XibCellViewModel: IdentifiableCellViewModel {
   var identity: Int {
     return value.hash
   }
+  
   func isEqual(to: IdentifiableCellViewModel) -> Bool {
     guard let to = to as? XibCellViewModel else { return false }
     return value == to.value
