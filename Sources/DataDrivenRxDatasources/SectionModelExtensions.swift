@@ -19,18 +19,18 @@ extension AnimatableTableSectionModel: ModelType {}
 
 // MARK: - Additional Section functionality
 
-// Protocol for viewModel that handles adding section header
+/// Protocol for viewModel that handles adding section header. (nil - will provide 0 header height)
 public protocol SectionHeaderTitleType {
-  var sectionHeaderTitle: String { get }
+  var sectionHeaderTitle: String? { get }
 }
 
-// Protocol for viewModel that handles adding section header
+/// Protocol for viewModel that handles adding section footer (nil - will provide 0 footer height)
 public protocol SectionFooterTitleType {
   var sectionFooterTitle: String? { get }
 }
 
 extension String: SectionHeaderTitleType {
-  public var sectionHeaderTitle: String {
+  public var sectionHeaderTitle: String? {
     return self
   }
 }
