@@ -142,4 +142,16 @@ private final class TableViewControllerDelegateProxy: NSObject, UITableViewDeleg
     }
     return false
   }
+  
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return (tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: section) == nil)
+      ? .leastNormalMagnitude
+      : UITableView.automaticDimension
+  }
+  
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return (tableView.dataSource?.tableView?(tableView, titleForFooterInSection: section) == nil)
+      ? .leastNormalMagnitude
+      : UITableView.automaticDimension
+  }
 }

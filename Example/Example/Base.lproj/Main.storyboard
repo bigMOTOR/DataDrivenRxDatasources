@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="d4a-9t-c1G">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="d4a-9t-c1G">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -23,6 +23,7 @@
                     <connections>
                         <segue destination="sV4-3l-ZmK" kind="show" identifier="toReloadExamples" id="oTY-I6-j1D"/>
                         <segue destination="tqZ-5p-2ua" kind="show" identifier="toAnimatableExamples" id="iVH-S8-1nA"/>
+                        <segue destination="AXd-Dt-fcB" kind="show" identifier="toHeadersAndFootersExamples" id="8k4-Zg-Gk4"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wcC-Nd-oHd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -169,6 +170,24 @@
             </objects>
             <point key="canvasLocation" x="3480" y="1527"/>
         </scene>
+        <!--Headers And Footers View Controller-->
+        <scene sceneID="3DF-ep-N0e">
+            <objects>
+                <tableViewController id="AXd-Dt-fcB" customClass="HeadersAndFootersViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="1" sectionFooterHeight="28" estimatedSectionFooterHeight="1" id="aPD-FL-3fr">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <connections>
+                            <outlet property="dataSource" destination="AXd-Dt-fcB" id="5PF-4N-LC6"/>
+                            <outlet property="delegate" destination="AXd-Dt-fcB" id="JmE-Fd-xYp"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="l9T-Hp-Pbm"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3va-lv-fal" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3480" y="-1696"/>
+        </scene>
         <!--ReloadTableVIew-->
         <scene sceneID="aHQ-a0-VzJ">
             <objects>
@@ -215,7 +234,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w7A-r0-HS3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3479.7101449275365" y="-1081.4732142857142"/>
+            <point key="canvasLocation" x="3480" y="-1006"/>
         </scene>
         <!--Animatable Table View Controller-->
         <scene sceneID="hsu-mo-9gK">

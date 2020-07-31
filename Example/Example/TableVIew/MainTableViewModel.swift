@@ -17,6 +17,7 @@ struct MainTableViewModel {
   enum Action {
     case toReloadExamples
     case toAnimatableExamples
+    case toHeadersAndFooters
   }
   
   let actions: Driver<Action>
@@ -29,6 +30,7 @@ struct MainTableViewModel {
     self.sections = .just([TableSectionModel(model:"", items: [
       ClassCellViewModel(value: "Reload example", onSelected: { _actionSubjet.onNext(.toReloadExamples) }),
       ClassCellViewModel(value: "Animated example", onSelected: { _actionSubjet.onNext(.toAnimatableExamples) }),
+      ClassCellViewModel(value: "Headers and Footers example", onSelected: { _actionSubjet.onNext(.toHeadersAndFooters) }),
     ])])
   }
 }

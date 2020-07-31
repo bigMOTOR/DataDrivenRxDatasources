@@ -40,7 +40,9 @@
 		870C12F9246619CC00A3E852 /* MainTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12F8246619CC00A3E852 /* MainTableViewModel.swift */; };
 		870C12FB24661A1C00A3E852 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870C12FA24661A1C00A3E852 /* MainTableViewController.swift */; };
 		8764BA6524D1984800106664 /* SomeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8764BA6424D1984800106664 /* SomeRepository.swift */; };
-		D36D610E248009C0003BA5C5 /* DataDrivenRxDatasources in Frameworks */ = {isa = PBXBuildFile; productRef = D36D610D248009C0003BA5C5 /* DataDrivenRxDatasources */; };
+		D3EFDEDB24D37E0F005987A5 /* HeadersAndFootersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EFDEDA24D37E0F005987A5 /* HeadersAndFootersViewController.swift */; };
+		D3EFDEDD24D37E30005987A5 /* HeadersAndFootersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EFDEDC24D37E30005987A5 /* HeadersAndFootersViewModel.swift */; };
+		D3EFDEE324D40CF2005987A5 /* DataDrivenRxDatasources in Frameworks */ = {isa = PBXBuildFile; productRef = D3EFDEE224D40CF2005987A5 /* DataDrivenRxDatasources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +81,8 @@
 		870C12F8246619CC00A3E852 /* MainTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewModel.swift; sourceTree = "<group>"; };
 		870C12FA24661A1C00A3E852 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		8764BA6424D1984800106664 /* SomeRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SomeRepository.swift; sourceTree = "<group>"; };
+		D3EFDEDA24D37E0F005987A5 /* HeadersAndFootersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersAndFootersViewController.swift; sourceTree = "<group>"; };
+		D3EFDEDC24D37E30005987A5 /* HeadersAndFootersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersAndFootersViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,12 +141,14 @@
 			isa = PBXGroup;
 			children = (
 				870C12EB246612DE00A3E852 /* Cells */,
-				2CC137B224654E2700CC6C27 /* AnimatableTableViewController.swift */,
-				2CC137B424654E8800CC6C27 /* AnimatableViewModel.swift */,
 				870C12FA24661A1C00A3E852 /* MainTableViewController.swift */,
 				870C12F8246619CC00A3E852 /* MainTableViewModel.swift */,
+				2CC137B224654E2700CC6C27 /* AnimatableTableViewController.swift */,
+				2CC137B424654E8800CC6C27 /* AnimatableViewModel.swift */,
 				2CC137A62464259A00CC6C27 /* ReloadTableViewController.swift */,
 				2CC137A824642D7500CC6C27 /* ReloadTableViewModel.swift */,
+				D3EFDEDA24D37E0F005987A5 /* HeadersAndFootersViewController.swift */,
+				D3EFDEDC24D37E30005987A5 /* HeadersAndFootersViewModel.swift */,
 				8764BA6424D1984800106664 /* SomeRepository.swift */,
 			);
 			path = TableVIew;
@@ -287,6 +293,7 @@
 				2C4EFA7C246C3C9E00E6E469 /* CollectionTableViewController.swift in Sources */,
 				2C4EFA8C246D663200E6E469 /* BehaviourRelayExtension.swift in Sources */,
 				2CC137AD24642E8E00CC6C27 /* XibCell.swift in Sources */,
+				D3EFDEDD24D37E30005987A5 /* HeadersAndFootersViewModel.swift in Sources */,
 				2C4EFA80246D2B3500E6E469 /* ProtoTypeCollectionCellViewModel.swift in Sources */,
 				2CFFF297246BE04200DA5154 /* CollectionViewController.swift in Sources */,
 				870C12F5246616B400A3E852 /* ProtoTypeCell.swift in Sources */,
@@ -295,6 +302,7 @@
 				2CC137B124642FC900CC6C27 /* XibCellViewModel.swift in Sources */,
 				870C12FB24661A1C00A3E852 /* MainTableViewController.swift in Sources */,
 				2CC1378D2464209F00CC6C27 /* SceneDelegate.swift in Sources */,
+				D3EFDEDB24D37E0F005987A5 /* HeadersAndFootersViewController.swift in Sources */,
 				2C4EFA86246D2F9800E6E469 /* ClassCollectionCellViewModel.swift in Sources */,
 				8764BA6524D1984800106664 /* SomeRepository.swift in Sources */,
 			);
