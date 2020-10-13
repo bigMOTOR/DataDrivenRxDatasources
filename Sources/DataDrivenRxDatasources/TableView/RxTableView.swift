@@ -23,14 +23,18 @@ extension Reactive where Base: UITableView {
   }
   
   // MARK: - Animatable
-  public func bind<S>(sections: Driver<[AnimatableTableSectionModel<S>]>, animationConfiguration: AnimationConfiguration = AnimationConfiguration()) -> Disposable {
+  public func bind<S>(sections: Driver<[AnimatableTableSectionModel<S>]>, animation: Animation = .configuration(AnimationConfiguration())) -> Disposable {
     return CompositeDisposable(disposables: [
       sections
         .do(onNext: _registerCells(for: base))
-        .drive(items(dataSource: _animatableDataSource(animationConfiguration: animationConfiguration))),
+        .drive(items(dataSource: _animatableDataSource(animation: animation))),
       _addDelegate(),
       _bindActions()
     ])
+  }
+  
+  public func bind<S>(sections: Driver<[AnimatableTableSectionModel<S>]>, animationConfiguration: AnimationConfiguration) -> Disposable {
+    return bind(sections: sections, animation: .configuration(animationConfiguration))
   }
   
   // MARK: - Cell Actions
@@ -95,14 +99,24 @@ private func _reloadDataSource<S>() -> RxTableViewSectionedReloadDataSource<Tabl
   )
 }
 
-private func _animatableDataSource<S>(animationConfiguration: AnimationConfiguration) -> RxTableViewSectionedAnimatedDataSource<AnimatableTableSectionModel<S>> {
-  return RxTableViewSectionedAnimatedDataSource<AnimatableTableSectionModel<S>>(
-    animationConfiguration: animationConfiguration,
-    configureCell: { (_, tv, indexPath, model) in _configureCell(tv: tv, indexPath: indexPath, model: model) },
-    titleForHeaderInSection: _titleForHeaderInSection,
-    titleForFooterInSection: _titleForFooterInSection,
-    canEditRowAtIndexPath: _canEditRowAtIndexPath
-  )
+private func _animatableDataSource<S>(animation: Animation) -> RxTableViewSectionedAnimatedDataSource<AnimatableTableSectionModel<S>> {
+  switch animation {
+  case .configuration(let animationConfiguration):
+    return RxTableViewSectionedAnimatedDataSource<AnimatableTableSectionModel<S>>(
+      animationConfiguration: animationConfiguration,
+      configureCell: { (_, tv, indexPath, model) in _configureCell(tv: tv, indexPath: indexPath, model: model) },
+      titleForHeaderInSection: _titleForHeaderInSection,
+      titleForFooterInSection: _titleForFooterInSection,
+      canEditRowAtIndexPath: _canEditRowAtIndexPath
+    )
+  case .none:
+    return RxTableViewSectionedNonAnimatedDataSource<AnimatableTableSectionModel<S>>(
+      configureCell: { (_, tv, indexPath, model) in _configureCell(tv: tv, indexPath: indexPath, model: model) },
+      titleForHeaderInSection: _titleForHeaderInSection,
+      titleForFooterInSection: _titleForFooterInSection,
+      canEditRowAtIndexPath: _canEditRowAtIndexPath
+    )
+  }
 }
 
 // MARK: - Configurations
@@ -153,5 +167,14 @@ private final class TableViewControllerDelegateProxy: NSObject, UITableViewDeleg
     return (tableView.dataSource?.tableView?(tableView, titleForFooterInSection: section) == nil)
       ? .leastNormalMagnitude
       : UITableView.automaticDimension
+  }
+}
+
+// MARK: - Data Source that disables animation on table view updates (history of this: https://github.com/RxSwiftCommunity/RxDataSources/issues/90)
+final class RxTableViewSectionedNonAnimatedDataSource<Section: AnimatableSectionModelType>: RxTableViewSectionedAnimatedDataSource<Section> {
+  override func tableView(_ tableView: UITableView, observedEvent: Event<Element>) {
+    UIView.performWithoutAnimation {
+      super.tableView(tableView, observedEvent: observedEvent)
+    }
   }
 }

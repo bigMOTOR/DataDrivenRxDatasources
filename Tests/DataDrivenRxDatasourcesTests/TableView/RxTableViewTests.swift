@@ -170,6 +170,17 @@ final class RxTableViewTests: XCTestCase {
     XCTAssertNil(sectionTitle)
   }
   
+  func testSetAnimationToNoneUseNonAnimatedDataSource() {
+    let value = "Some Section"
+    let sections: Driver<[AnimatedSectionViewModel]> = .just([AnimatedSectionViewModel(model: value, items: [SampleCellViewModel(name: "Some Cell")])])
+    
+    tableView.rx
+      .bind(sections: sections, animation: .none)
+      .disposed(by: bag)
+    
+    XCTAssertTrue(tableView.rx.dataSource.forwardToDelegate()?.isKind(of: RxTableViewSectionedNonAnimatedDataSource<AnimatedSectionViewModel>.self) ?? false)
+  }
+  
   static var allTests = [
     ("testCellCountOnReloadDataSource", testCellCountOnReloadDataSource),
     ("testSectionCountOnReloadDataSource", testSectionCountOnReloadDataSource),
@@ -179,6 +190,7 @@ final class RxTableViewTests: XCTestCase {
     ("testSectionCountOnAnimatableDataSource", testSectionCountOnAnimatableDataSource),
     ("testCellValueOnAnimatableDataSource", testCellValueOnAnimatableDataSource),
     ("testStringSectionNameOnAnimatableDataSourceGenerateName", testStringSectionNameOnAnimatableDataSourceGenerateName),
-    ("testSomeObjectAsSection", testSomeObjectAsSection)
+    ("testSomeObjectAsSection", testSomeObjectAsSection),
+    ("testSetAnimationToNoneUseNonAnimatedDataSource", testSetAnimationToNoneUseNonAnimatedDataSource)
   ]
 }
