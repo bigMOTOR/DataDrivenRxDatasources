@@ -55,6 +55,10 @@ Please take a look at our ‘Example’ project to get more use cases.
 - Something wrong or you need anything else? Please open an issue or make a Pull Request.
 - Pull requests are welcome.
 
+## Requirements
+DataDrivenRxDatasources requires RxDataSources 5.x and RxSwift 6.x.
+For the last RxSwift 5.x support, please use DataDrivenRxDatasources 1.2.0.
+
 ## License
 
 DataDrivenRxDatasources is available under the MIT license. See the LICENSE file for more info.
