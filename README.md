@@ -11,7 +11,8 @@ The standard approach to managing table/collection views with data sources has s
 
 RxDataSources helps us to solve some of this problem with an elegant data binding mechanism and powerful AnimatableSectionModel & SectionModel abstractions, but still stays us on our own with repeatable cell registration and violation of dependency inversion principle.
 
-Data-driven is a programming paradigm in which the program code, although separated from the input data, is designed in such a way that the program logic is determined by the input data. DataDrivenRxDatasources lets us address these issues and design a data-driven, reusable, and declarative table view component which depends only on its ViewModel.
+DataDrivenRxDatasources brings another level of the abstractions and lets us address these issues and design a data-driven, reusable, declarative table/collection view components which depends only on its ViewModel. The core of our library is based on abstracted protocols that are supposed to provide binding sections and cells but don’t care what these sections and cells really are.
+More info on [Medium](https://bigmotor.medium.com/building-table-collectionview-in-a-few-lines-of-code-with-datadrivenrxdatasources-on-top-of-97ee9702b24f)
 
 <details>
 <summary>Installation</summary>
