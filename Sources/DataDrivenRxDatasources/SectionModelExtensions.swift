@@ -56,3 +56,20 @@ extension EditableType {
     return true
   }
 }
+
+// Protocol for UITableViewCell to update constraints and redraw cell
+import UIKit.UITableView
+
+public protocol ExpandableCell {
+  var reload: (() -> Void)? { get set }
+}
+
+extension ExpandableCell {
+  public mutating func setReload(with tableView: UITableView) {
+    reload = { [weak tableView] in
+      tableView?.beginUpdates()
+      tableView?.updateConstraintsIfNeeded()
+      tableView?.endUpdates()
+    }
+  }
+}
