@@ -129,6 +129,8 @@ private func _configureCell<C: CellViewModelWrapper>(tv: UITableView, indexPath:
   let cell = tv.dequeueReusableCell(withIdentifier: model.base.cellViewClass.identifier, for: indexPath)
   guard var modeledCell = cell as? ModelledCell else { return cell }
   modeledCell.cellModel = model.base
+  guard var expandableCell = cell as? ExpandableCell else { return cell }
+  expandableCell.setReload(with: tv)
   return cell
 }
 
