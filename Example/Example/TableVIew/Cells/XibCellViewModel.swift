@@ -10,7 +10,7 @@ import Foundation
 import RxDataSources
 import DataDrivenRxDatasources
 
-struct XibCellViewModel: EditableType {
+struct XibCellViewModel: DeletableType {
   let value: String
   let onDeleted: (() -> Void)?
 }

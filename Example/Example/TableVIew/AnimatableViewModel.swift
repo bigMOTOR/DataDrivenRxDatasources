@@ -18,7 +18,11 @@ struct AnimatableViewModel {
   init(repository: SomeRepository = SomeRepository()) {
     _repository = repository
     sections = _repository.models
-      .map { [AnimatableTableSectionModel(model: "", items: $0.map(_cellViewModel(repository.remove)))] }
+      .map {
+        [AnimatableTableSectionModel(model: "",
+                                     items: $0.map(_cellViewModel(deleteAction: repository.remove,
+                                                                  setDetails: { repository.newTrailingSwipeableDetails(UUID().uuidString) })))]
+      }
       .asDriver(onErrorJustReturn: [])
   }
   
@@ -36,7 +40,7 @@ private func provideRandomCell() -> SomeModel {
   ][Int.random(in: (0...2))]
 }
 
-private func _cellViewModel(_ deleteAction: @escaping (SomeModel) -> Void) -> (SomeModel) -> IdentifiableCellViewModel {
+private func _cellViewModel(deleteAction: @escaping (SomeModel) -> Void, setDetails: @escaping () -> Void) -> (SomeModel) -> IdentifiableCellViewModel {
   return { model in
     switch model {
     case .xibType(let id):
@@ -45,6 +49,8 @@ private func _cellViewModel(_ deleteAction: @escaping (SomeModel) -> Void) -> (S
       return ClassCellViewModel(value: id, onSelected: { print("cell selected") })
     case .protoType(let id):
       return ProtoTypeCellViewModel(value: id, onInfoTap: { print("cell info tapped") })
+    case .trailingSwipeable(let id):
+      return TrailingSwipeableCellViewModel(details: id, trailingAction: setDetails)
     }
   }
 }
