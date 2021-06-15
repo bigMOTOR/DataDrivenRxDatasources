@@ -9,10 +9,13 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+private let _trailingSwipeableId = "trailingSwipeableId"
+
 enum SomeModel {
   case xibType(String)
   case classType(String)
   case protoType(String)
+  case trailingSwipeable(details: String)
   
   var id: String {
     switch self {
@@ -22,6 +25,8 @@ enum SomeModel {
       return id
     case .protoType(let id):
       return id
+    case .trailingSwipeable:
+      return _trailingSwipeableId
     }
   }
 }
@@ -31,6 +36,7 @@ struct SomeRepository {
     .xibType(UUID().uuidString),
     .classType(UUID().uuidString),
     .protoType(UUID().uuidString),
+    .trailingSwipeable(details: UUID().uuidString)
   ])
   
   var models: Observable<[SomeModel]> {
@@ -43,5 +49,12 @@ struct SomeRepository {
   
   func remove(_ model: SomeModel) {
     _models.accept(_models.value.filter { $0.id != model.id })
+  }
+  
+  func newTrailingSwipeableDetails(_ details: String) {
+    var mutableModels = _models.value
+    guard let idx = mutableModels.firstIndex(where: { $0.id == _trailingSwipeableId }) else { return }
+    mutableModels[idx] = .trailingSwipeable(details: details)
+    _models.accept(mutableModels)
   }
 }

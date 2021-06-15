@@ -57,7 +57,8 @@ Please take a look at our ‘Example’ project to get more use cases.
 - Pull requests are welcome.
 
 ## Requirements
-DataDrivenRxDatasources requires RxDataSources 5.x and RxSwift 6.x.
+DataDrivenRxDatasources requires iOS11, RxDataSources 5.x and RxSwift 6.x.
+For the last iOS10 support, please use DataDrivenRxDatasources 2.1.0.
 For the last RxSwift 5.x support, please use DataDrivenRxDatasources 1.2.0.
 
 ## License
