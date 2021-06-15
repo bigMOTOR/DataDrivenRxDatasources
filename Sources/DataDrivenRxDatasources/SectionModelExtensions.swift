@@ -45,16 +45,14 @@ public protocol InfoTappableType {
   var onInfoTap:(() -> Void)? { get }
 }
 
-// Protocol for viewModel that handles cell editing/deleting
-public protocol EditableType {
-  var canEdit: Bool { get }
+// Protocol for viewModel that handles cell swipe to delete
+public protocol DeletableType {
   var onDeleted:(() -> Void)? { get }
 }
 
-extension EditableType {
-  public var canEdit: Bool {
-    return true
-  }
+// Protocol for viewModel that provide and handles trailing swipe actions
+public protocol TrailingSwipeableType {
+  var trailingSwipeActions: [SwipeAction] { get }
 }
 
 // Protocol for UITableViewCell to update constraints and redraw cell

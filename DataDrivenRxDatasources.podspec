@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "DataDrivenRxDatasources"
-  s.version          = "2.1.0"
+  s.version          = "3.0.0"
   s.summary          = "MVVM abstraction boilerplate code over RxDataSources."
   s.description      = <<-DESC
   DataDrivenRxDatasources - MVVM abstraction boilerplate code over RxDataSources.
@@ -39,8 +39,7 @@ tableView.rx
   s.source           = { :git => "https://github.com/bigMOTOR/DataDrivenRxDatasources.git", :tag => s.version.to_s }
   s.swift_version    = '5.0'
   
-  s.ios.deployment_target = '10.0'
-  s.tvos.deployment_target = '10.0'
+  s.ios.deployment_target = '11.0'
 
   s.source_files = "Sources/DataDrivenRxDatasources/*.swift", "Sources/DataDrivenRxDatasources/**/*.swift"
                      

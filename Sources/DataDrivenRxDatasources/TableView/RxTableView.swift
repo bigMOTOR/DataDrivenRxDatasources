@@ -46,8 +46,8 @@ extension Reactive where Base: UITableView {
       // Cell deletion
       modelDeleted(CellViewModelWrapper.self)
         .subscribe(onNext: { model in
-          guard let editableModel = model.base as? EditableType else { return }
-          editableModel.onDeleted?()
+          guard let deletableModel = model.base as? DeletableType else { return }
+          deletableModel.onDeleted?()
         }),
       
       // Accessory selections
@@ -117,12 +117,16 @@ private func _titleForFooterInSection<S: SectionModelType & ModelType>(dataSourc
 }
 
 private func _canEditRowAtIndexPath<S: SectionModelType & ModelType>(dataSource: TableViewSectionedDataSource<S>, indexPath: IndexPath) -> Bool {
-  if
-    let model = try? dataSource.model(at: indexPath) as? CellViewModelWrapper,
-    let editableModel = model.base as? EditableType {
-    return editableModel.canEdit
+  guard let model = try? dataSource.model(at: indexPath) as? CellViewModelWrapper else { return false }
+  
+  switch model.base {
+  case let deletableType as DeletableType:
+    return deletableType.onDeleted != nil
+  case let trailingSwipeableType as TrailingSwipeableType:
+    return trailingSwipeableType.trailingSwipeActions.count > 0
+  default:
+    return false
   }
-  return false
 }
 
 private func _configureCell<C: CellViewModelWrapper>(tv: UITableView, indexPath: IndexPath, model: C) -> UITableViewCell {
@@ -155,5 +159,42 @@ private final class TableViewControllerDelegateProxy: NSObject, UITableViewDeleg
     return (tableView.dataSource?.tableView?(tableView, titleForFooterInSection: section) == nil)
       ? .leastNormalMagnitude
       : UITableView.automaticDimension
+  }
+  
+  func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    guard
+      let modelledCell = tableView.cellForRow(at: indexPath) as? ModelledCell,
+      let model = modelledCell.cellModel as? TrailingSwipeableType
+      else { return nil }
+    
+    return UISwipeActionsConfiguration(actions: model.trailingSwipeActions.map(\.contextualAction))
+  }
+}
+
+private extension SwipeAction {
+  var contextualAction: UIContextualAction {
+    let contextualAction = UIContextualAction(style: style.contextualActionStyle, title: title) { _, _, completionHandler in
+      handler()
+      completionHandler(true)
+    }
+    
+    contextualAction.image = image
+    
+    if let customColor = backgroundColor {
+      contextualAction.backgroundColor = customColor
+    }
+    
+    return contextualAction
+  }
+}
+
+private extension SwipeAction.Style {
+  var contextualActionStyle: UIContextualAction.Style {
+    switch self {
+    case .normal:
+      return .normal
+    case .destructive:
+      return .destructive
+    }
   }
 }
