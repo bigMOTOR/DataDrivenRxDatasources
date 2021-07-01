@@ -14,7 +14,7 @@ public enum CellType {
   // directly form class
   case classType(UITableViewCell.Type)
   // from xib file
-  case nibType(name: String)
+  case nibType(name: String, bundle: Bundle? = nil)
   // from storyboard
   case prototype(reuseId: String)
 }
@@ -37,8 +37,8 @@ extension CellType {
     switch self {
     case .classType(let type):
       table.register(type, forCellReuseIdentifier: identifier)
-    case .nibType(let nibName):
-      table.register(UINib(nibName: nibName, bundle: nil), forCellReuseIdentifier: identifier)
+    case .nibType(let nibName, let bundle):
+      table.register(UINib(nibName: nibName, bundle: bundle), forCellReuseIdentifier: identifier)
     case .prototype:
       break // Must be registered in Storyboard
     }
@@ -48,7 +48,7 @@ extension CellType {
     switch self {
     case .classType(let type):
       return "\(type)"
-    case .nibType(let nibName):
+    case .nibType(let nibName, _):
       return nibName
     case .prototype(let id):
       return id

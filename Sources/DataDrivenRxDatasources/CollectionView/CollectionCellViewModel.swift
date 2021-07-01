@@ -14,7 +14,7 @@ public enum CollectionCellType {
   // directly form class
   case classType(UICollectionViewCell.Type)
   // from xib file
-  case nibType(name: String)
+  case nibType(name: String, bundle: Bundle? = nil)
   // from storyboard
   case prototype(reuseId: String)
 }
@@ -37,8 +37,8 @@ extension CollectionCellType {
     switch self {
     case .classType(let type):
       collection.register(type, forCellWithReuseIdentifier: identifier)
-    case .nibType(let nibName):
-      collection.register(UINib(nibName: nibName, bundle: nil), forCellWithReuseIdentifier: identifier)
+    case .nibType(let nibName, let bundle):
+      collection.register(UINib(nibName: nibName, bundle: bundle), forCellWithReuseIdentifier: identifier)
     case .prototype:
       break // Must be registered in Storyboard
     }
@@ -48,7 +48,7 @@ extension CollectionCellType {
     switch self {
     case .classType(let type):
       return "\(type)"
-    case .nibType(let nibName):
+    case .nibType(let nibName, _):
       return nibName
     case .prototype(let id):
       return id
