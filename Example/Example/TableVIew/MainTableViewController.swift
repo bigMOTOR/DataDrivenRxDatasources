@@ -3,7 +3,6 @@
 //  Example
 //
 //  Created by Mikhail Markin on 09.05.2020.
-//  Copyright © 2020 Dmitriy. All rights reserved.
 //
 
 import UIKit

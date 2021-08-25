@@ -3,7 +3,6 @@
 //  Example
 //
 //  Created by Dmitriy on 5/14/20.
-//  Copyright © 2020 Dmitriy. All rights reserved.
 //
 
 import RxCocoa
