@@ -14,6 +14,7 @@ class MainTableViewController: UITableViewController {
   enum Segue: String {
     case toReloadExamples
     case toAnimatableExamples
+    case toDiffableExamples
     case toHeadersAndFootersExamples
   }
   
@@ -32,6 +33,9 @@ class MainTableViewController: UITableViewController {
         case .toAnimatableExamples:
           let model = AnimatableViewModel()
           self.performSegue(withIdentifier: MainTableViewController.Segue.toAnimatableExamples.rawValue, sender: model)
+        case .toDiffableExamples:
+          let model = DiffableViewModel()
+          self.performSegue(withIdentifier: MainTableViewController.Segue.toDiffableExamples.rawValue, sender: model)
         case .toHeadersAndFooters:
           let model = HeadersAndFootersViewModel()
           self.performSegue(withIdentifier: MainTableViewController.Segue.toHeadersAndFootersExamples.rawValue, sender: model)
@@ -49,6 +53,8 @@ class MainTableViewController: UITableViewController {
     case (Self.Segue.toReloadExamples.rawValue, let controller as ReloadTableViewController, let model as ReloadTableViewModel):
       controller.viewModel = model
     case (Self.Segue.toAnimatableExamples.rawValue, let controller as AnimatableTableViewController, let model as AnimatableViewModel):
+      controller.viewModel = model
+    case (Self.Segue.toDiffableExamples.rawValue, let controller as DiffableTableViewController, let model as DiffableViewModel):
       controller.viewModel = model
     case (Self.Segue.toHeadersAndFootersExamples.rawValue, let controller as HeadersAndFootersViewController, let model as HeadersAndFootersViewModel):
       controller.viewModel = model

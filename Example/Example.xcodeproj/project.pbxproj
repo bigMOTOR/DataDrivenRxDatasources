@@ -43,6 +43,8 @@
 		97E0CD642678A475001601CE /* DataDrivenRxDatasources in Frameworks */ = {isa = PBXBuildFile; productRef = D36D610D248009C0003BA5C5 /* DataDrivenRxDatasources */; };
 		97E0CD662678C069001601CE /* TrailingSwipeableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E0CD652678C069001601CE /* TrailingSwipeableCell.swift */; };
 		97E0CD682678C08A001601CE /* TrailingSwipeableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E0CD672678C08A001601CE /* TrailingSwipeableCellViewModel.swift */; };
+		CA094AD426D1BA8700006488 /* DiffableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA094AD226D1BA8700006488 /* DiffableTableViewController.swift */; };
+		CA094AD526D1BA8700006488 /* DiffableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA094AD326D1BA8700006488 /* DiffableViewModel.swift */; };
 		D3EFDEDB24D37E0F005987A5 /* HeadersAndFootersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EFDEDA24D37E0F005987A5 /* HeadersAndFootersViewController.swift */; };
 		D3EFDEDD24D37E30005987A5 /* HeadersAndFootersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EFDEDC24D37E30005987A5 /* HeadersAndFootersViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -85,6 +87,8 @@
 		8764BA6424D1984800106664 /* SomeRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SomeRepository.swift; sourceTree = "<group>"; };
 		97E0CD652678C069001601CE /* TrailingSwipeableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingSwipeableCell.swift; sourceTree = "<group>"; };
 		97E0CD672678C08A001601CE /* TrailingSwipeableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingSwipeableCellViewModel.swift; sourceTree = "<group>"; };
+		CA094AD226D1BA8700006488 /* DiffableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableTableViewController.swift; sourceTree = "<group>"; };
+		CA094AD326D1BA8700006488 /* DiffableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableViewModel.swift; sourceTree = "<group>"; };
 		D3EFDEDA24D37E0F005987A5 /* HeadersAndFootersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersAndFootersViewController.swift; sourceTree = "<group>"; };
 		D3EFDEDC24D37E30005987A5 /* HeadersAndFootersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersAndFootersViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,6 +153,8 @@
 				870C12F8246619CC00A3E852 /* MainTableViewModel.swift */,
 				2CC137B224654E2700CC6C27 /* AnimatableTableViewController.swift */,
 				2CC137B424654E8800CC6C27 /* AnimatableViewModel.swift */,
+				CA094AD226D1BA8700006488 /* DiffableTableViewController.swift */,
+				CA094AD326D1BA8700006488 /* DiffableViewModel.swift */,
 				2CC137A62464259A00CC6C27 /* ReloadTableViewController.swift */,
 				2CC137A824642D7500CC6C27 /* ReloadTableViewModel.swift */,
 				D3EFDEDA24D37E0F005987A5 /* HeadersAndFootersViewController.swift */,
@@ -282,6 +288,7 @@
 			files = (
 				2CC137A72464259A00CC6C27 /* ReloadTableViewController.swift in Sources */,
 				2CFFF29F246BE0C000DA5154 /* XibCollectionCellViewModel.swift in Sources */,
+				CA094AD526D1BA8700006488 /* DiffableViewModel.swift in Sources */,
 				2C4EFA82246D2F6300E6E469 /* ClassCollectionCell.swift in Sources */,
 				2C4EFA7E246D2AF900E6E469 /* ProtoTypeCollectionCell.swift in Sources */,
 				2C4EFA88246D620A00E6E469 /* AnimatableCollectionViewController.swift in Sources */,
@@ -290,6 +297,7 @@
 				2CC137B524654E8800CC6C27 /* AnimatableViewModel.swift in Sources */,
 				2C4EFA8A246D624000E6E469 /* AnimatableControllerViewModel.swift in Sources */,
 				2CC137A924642D7500CC6C27 /* ReloadTableViewModel.swift in Sources */,
+				CA094AD426D1BA8700006488 /* DiffableTableViewController.swift in Sources */,
 				2C50B3CB24727686005F1C58 /* CollectionnTableViewModel.swift in Sources */,
 				870C12EF2466149100A3E852 /* ClassCell.swift in Sources */,
 				870C12ED2466146F00A3E852 /* ClassCellViewModel.swift in Sources */,
