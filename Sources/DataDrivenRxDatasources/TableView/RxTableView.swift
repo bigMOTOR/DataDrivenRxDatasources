@@ -13,22 +13,24 @@ import RxDataSources
 extension Reactive where Base: UITableView {
   // MARK: - Reload
   public func bind<S>(sections: Driver<[TableSectionModel<S>]>) -> Disposable {
+    let dataSource: RxTableViewSectionedReloadDataSource<TableSectionModel<S>> = _reloadDataSource()
     return CompositeDisposable(disposables: [
       sections
-        .do(onNext: _registerCells(for: base))
-        .drive(items(dataSource: _reloadDataSource())),
-      _addDelegate(),
+        .do(onNext: _registerReusables(for: base))
+        .drive(items(dataSource: dataSource)),
+      _addDelegate(using: dataSource),
       _bindActions()
     ])
   }
   
   // MARK: - Animatable
   public func bind<S>(sections: Driver<[AnimatableTableSectionModel<S>]>, animationConfiguration: AnimationConfiguration = AnimationConfiguration()) -> Disposable {
+    let dataSource: RxTableViewSectionedAnimatedDataSource<AnimatableTableSectionModel<S>> = _animatableDataSource(animationConfiguration: animationConfiguration)
     return CompositeDisposable(disposables: [
       sections
-        .do(onNext: _registerCells(for: base))
-        .drive(items(dataSource: _animatableDataSource(animationConfiguration: animationConfiguration))),
-      _addDelegate(),
+        .do(onNext: _registerReusables(for: base))
+        .drive(items(dataSource: dataSource)),
+      _addDelegate(using: dataSource),
       _bindActions()
     ])
   }
@@ -40,7 +42,7 @@ extension Reactive where Base: UITableView {
     
     // merging with .never to keep subscription live and dataSource not released
     let diffableSections = Driver.merge(sections, .never())
-      .do(onNext: _registerCells(for: base))
+      .do(onNext: _registerReusables(for: base))
       .map { sections in
         var snapshot = NSDiffableDataSourceSnapshot<S, DiffableCellViewModel>()
         snapshot.appendSections(sections.map(\.model))
@@ -55,7 +57,7 @@ extension Reactive where Base: UITableView {
     
     return CompositeDisposable(disposables: [
       diffableSections,
-      _addDelegate(),
+      _addDelegate(using: dataSource),
       _bindActions()
     ])
   }
@@ -94,21 +96,33 @@ extension Reactive where Base: UITableView {
   }
   
   // MARK: - Add Delegate
-  private func _addDelegate() -> Disposable {
-    let delegate = TableViewControllerDelegateProxy()
+  private func _addDelegate<DataSource: ExtendedSectionedViewDataSourceType & AnyObject>(using dataSource: DataSource) -> Disposable {
+    let delegate = TableViewControllerDelegateProxy(dataSource: dataSource)
     base.delegate = delegate
     return Disposables.create { [delegate] in _ = delegate }
   }
 }
 
 // MARK: - Cell registration
-private func _registerCells<S: SectionModelType>(for tableView: UITableView) -> ([S]) -> () where S.Item: CellViewModelWrapper {
+private func _registerReusables<S: SectionModelType & ModelType>(for tableView: UITableView) -> ([S]) -> () where S.Item: CellViewModelWrapper {
   return { sections in
     sections
-      .flatMap { $0.items }
-      .forEach { modelWrapper in
-        modelWrapper.base.cellViewClass.registerFor(table: tableView)
-    }
+      .forEach { section in
+        (section.model as? SectionHeaderViewType)
+          .flatMap(\.sectionHeaderViewModel)
+          .map(\.headerFooterViewClass)?
+          .registerFor(table: tableView)
+        
+        (section.model as? SectionFooterViewType)
+          .flatMap(\.sectionFooterViewModel)
+          .map(\.headerFooterViewClass)?
+          .registerFor(table: tableView)
+        
+        section.items
+          .forEach { modelWrapper in
+            modelWrapper.base.cellViewClass.registerFor(table: tableView)
+          }
+      }
   }
 }
 
@@ -177,35 +191,76 @@ private func _canEditRowAtIndexPath(dataSource: SectionedViewDataSourceType, ind
 }
 
 // MARK: - TableViewControllerDelegateProxy
-private final class TableViewControllerDelegateProxy: NSObject, UITableViewDelegate {
+private final class TableViewControllerDelegateProxy<DataSource: ExtendedSectionedViewDataSourceType & AnyObject>: NSObject, UITableViewDelegate {
+  private weak var _dataSource: DataSource!
+  
+  init(dataSource: DataSource) {
+    _dataSource = dataSource
+  }
+  
   func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-    if
-      let modelledCell = tableView.cellForRow(at: indexPath) as? ModelledCell,
-      let model = modelledCell.cellModel as? SelectableType {
-      return model.onSelected != nil
-    }
-    return false
+    guard
+      let model = try? _dataSource.model(at: indexPath) as? CellViewModelWrapper,
+      let selectableModel = model.base as? SelectableType
+    else { return false }
+    return selectableModel.onSelected != nil
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return (tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: section) == nil)
-      ? .leastNormalMagnitude
-      : UITableView.automaticDimension
+    return (
+      tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: section) == nil
+      && _sectionHeaderModel(at: section) == nil
+    )
+    ? .leastNormalMagnitude
+    : UITableView.automaticDimension
   }
-  
+
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return (tableView.dataSource?.tableView?(tableView, titleForFooterInSection: section) == nil)
-      ? .leastNormalMagnitude
-      : UITableView.automaticDimension
+    return (
+      tableView.dataSource?.tableView?(tableView, titleForFooterInSection: section) == nil
+      && _sectionFooterModel(at: section) == nil
+    )
+    ? .leastNormalMagnitude
+    : UITableView.automaticDimension
   }
-  
+
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     guard
-      let modelledCell = tableView.cellForRow(at: indexPath) as? ModelledCell,
-      let model = modelledCell.cellModel as? TrailingSwipeableType
-      else { return nil }
-    
-    return UISwipeActionsConfiguration(actions: model.trailingSwipeActions.map(\.contextualAction))
+      let model = try? _dataSource.model(at: indexPath) as? CellViewModelWrapper,
+      let trailingModel = model.base as? TrailingSwipeableType
+    else { return nil }
+    return UISwipeActionsConfiguration(actions: trailingModel.trailingSwipeActions.map(\.contextualAction))
+  }
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return _sectionHeaderModel(at: section)
+      .flatMap(_headerFooterView(tableView: tableView))
+  }
+  
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return _sectionFooterModel(at: section)
+      .flatMap(_headerFooterView(tableView: tableView))
+  }
+  
+  private func _sectionHeaderModel(at index: Int) -> HeaderFooterViewModel? {
+    return _dataSource.sectionModel(at: index)
+      .flatMap { $0 as? SectionHeaderViewType }
+      .flatMap(\.sectionHeaderViewModel)
+  }
+  
+  private func _sectionFooterModel(at index: Int) -> HeaderFooterViewModel? {
+    return _dataSource.sectionModel(at: index)
+      .flatMap { $0 as? SectionFooterViewType }
+      .flatMap(\.sectionFooterViewModel)
+  }
+}
+
+private func _headerFooterView(tableView: UITableView) -> (HeaderFooterViewModel) -> UITableViewHeaderFooterView? {
+  return { model in
+    let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: model.headerFooterViewClass.identifier)
+    guard var modeledView = view as? ModelledHeaderFooterView else { return view }
+    modeledView.headerFooterModel = model
+    return view
   }
 }
 
