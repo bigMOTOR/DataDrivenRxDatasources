@@ -10,17 +10,17 @@ import RxCocoa
 import RxDataSources
 import DataDrivenRxDatasources
 
-struct AnimatableViewModel {
-  let sections: Driver<[AnimatableTableSectionModel<String>]>
+struct DiffableViewModel {
+  let sections: Driver<[DiffableTableSectionModel<String>]>
   let _repository: SomeRepository
   
   init(repository: SomeRepository = SomeRepository()) {
     _repository = repository
     sections = _repository.models
       .map {
-        [AnimatableTableSectionModel(model: "",
-                                     items: $0.map(_cellViewModel(deleteAction: repository.remove,
-                                                                  setDetails: { repository.newTrailingSwipeableDetails(UUID().uuidString) })))]
+        [DiffableTableSectionModel(model: "",
+                                   items: $0.map(_cellViewModel(deleteAction: repository.remove,
+                                                                setDetails: { repository.newTrailingSwipeableDetails(UUID().uuidString) })))]
       }
       .asDriver(onErrorJustReturn: [])
   }

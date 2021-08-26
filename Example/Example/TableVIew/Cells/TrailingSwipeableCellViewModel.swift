@@ -3,7 +3,6 @@
 //  Example
 //
 //  Created by Nikolay Fiantsev on 15.06.2021.
-//  Copyright © 2021 Dmitriy. All rights reserved.
 //
 
 import RxDataSources

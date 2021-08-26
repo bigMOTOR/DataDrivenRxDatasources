@@ -16,6 +16,8 @@ protocol ModelType {
 
 extension TableSectionModel: ModelType {}
 extension AnimatableTableSectionModel: ModelType {}
+@available(iOS 13.0, *)
+extension DiffableTableSectionModel: ModelType {}
 
 // MARK: - Additional Section functionality
 

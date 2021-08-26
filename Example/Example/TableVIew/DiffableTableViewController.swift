@@ -1,18 +1,18 @@
 //
-//  HeadersAndFootersViewController.swift
+//  AnimatableTableViewController.swift
 //  Example
 //
-//  Created by Nikolay Fiantsev on 31.07.2020.
+//  Created by Dmitriy on 5/8/20.
 //
 
 import UIKit
 import RxSwift
 import RxCocoa
 
-class HeadersAndFootersViewController: UITableViewController {
+class DiffableTableViewController: UITableViewController {
   private let _bag = DisposeBag()
   
-  var viewModel: HeadersAndFootersViewModel!
+  var viewModel: DiffableViewModel!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -20,5 +20,9 @@ class HeadersAndFootersViewController: UITableViewController {
     tableView.rx
       .bind(sections: viewModel.sections)
       .disposed(by: _bag)
+  }
+  
+  @IBAction func insertNewRow() {
+    viewModel.insertRow()
   }
 }

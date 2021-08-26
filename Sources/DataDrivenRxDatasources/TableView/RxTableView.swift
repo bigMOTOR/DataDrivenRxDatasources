@@ -33,6 +33,33 @@ extension Reactive where Base: UITableView {
     ])
   }
   
+  @available(iOS 13.0, *)
+  public func bind<S>(sections: Driver<[DiffableTableSectionModel<S>]>, rowAnimation: UITableView.RowAnimation = .automatic) -> Disposable {
+    let dataSource: RxTableViewDiffableDataSource<S, DiffableCellViewModel> = _diffableDataSource(tableView: base, rowAnimation: rowAnimation)
+    var firstLoad = true
+    
+    // merging with .never to keep subscription live and dataSource not released
+    let diffableSections = Driver.merge(sections, .never())
+      .do(onNext: _registerCells(for: base))
+      .map { sections in
+        var snapshot = NSDiffableDataSourceSnapshot<S, DiffableCellViewModel>()
+        snapshot.appendSections(sections.map(\.model))
+        sections.forEach { section in
+          snapshot.appendItems(section.items, toSection: section.model)
+        }
+        return snapshot
+      }
+      .drive(onNext: { snapshot in
+        dataSource.apply(snapshot, animatingDifferences: !firstLoad, completion: { firstLoad = false })
+      })
+    
+    return CompositeDisposable(disposables: [
+      diffableSections,
+      _addDelegate(),
+      _bindActions()
+    ])
+  }
+  
   // MARK: - Cell Actions
   private func _bindActions() -> Disposable {
     let tableView = base
@@ -70,7 +97,7 @@ extension Reactive where Base: UITableView {
   private func _addDelegate() -> Disposable {
     let delegate = TableViewControllerDelegateProxy()
     base.delegate = delegate
-    return Disposables.create { [delegate] in _ = delegate}
+    return Disposables.create { [delegate] in _ = delegate }
   }
 }
 
@@ -105,18 +132,38 @@ private func _animatableDataSource<S>(animationConfiguration: AnimationConfigura
   )
 }
 
+@available(iOS 13.0, *)
+private func _diffableDataSource<S>(tableView: UITableView, rowAnimation: UITableView.RowAnimation) -> RxTableViewDiffableDataSource<S, DiffableCellViewModel> {
+  let dataSource = RxTableViewDiffableDataSource<S, DiffableCellViewModel>(
+    tableView: tableView,
+    cellProvider: _configureCell,
+    titleForHeaderInSectionProvider: _titleForHeaderInSection,
+    titleForFooterInSectionProvider: _titleForFooterInSection,
+    canEditRowAtIndexPathProvider: _canEditRowAtIndexPath
+  )
+  dataSource.defaultRowAnimation = rowAnimation
+  return dataSource
+}
+
 // MARK: - Configurations
-private func _titleForHeaderInSection<S: SectionModelType & ModelType>(dataSource: TableViewSectionedDataSource<S>, index: Int) -> String? {
-  guard let model = dataSource.sectionModels[index].model as? SectionHeaderTitleType else { return nil }
-  return model.sectionHeaderTitle
+private func _configureCell<C: CellViewModelWrapper>(tv: UITableView, indexPath: IndexPath, model: C) -> UITableViewCell {
+  let cell = tv.dequeueReusableCell(withIdentifier: model.base.cellViewClass.identifier, for: indexPath)
+  guard var modeledCell = cell as? ModelledCell else { return cell }
+  modeledCell.cellModel = model.base
+  guard var expandableCell = cell as? ExpandableCell else { return cell }
+  expandableCell.setReload(with: tv)
+  return cell
 }
 
-private func _titleForFooterInSection<S: SectionModelType & ModelType>(dataSource: TableViewSectionedDataSource<S>, index: Int) -> String? {
-  guard let model = dataSource.sectionModels[index].model as? SectionFooterTitleType else { return nil }
-  return model.sectionFooterTitle
+private func _titleForHeaderInSection<DataSource: ExtendedSectionedViewDataSourceType>(dataSource: DataSource, index: Int) -> String? {
+  return (dataSource.sectionModel(at: index) as? SectionHeaderTitleType)?.sectionHeaderTitle
 }
 
-private func _canEditRowAtIndexPath<S: SectionModelType & ModelType>(dataSource: TableViewSectionedDataSource<S>, indexPath: IndexPath) -> Bool {
+private func _titleForFooterInSection<DataSource: ExtendedSectionedViewDataSourceType>(dataSource: DataSource, index: Int) -> String? {
+  return (dataSource.sectionModel(at: index) as? SectionFooterTitleType)?.sectionFooterTitle
+}
+
+private func _canEditRowAtIndexPath(dataSource: SectionedViewDataSourceType, indexPath: IndexPath) -> Bool {
   guard let model = try? dataSource.model(at: indexPath) as? CellViewModelWrapper else { return false }
   
   switch model.base {
@@ -127,15 +174,6 @@ private func _canEditRowAtIndexPath<S: SectionModelType & ModelType>(dataSource:
   default:
     return false
   }
-}
-
-private func _configureCell<C: CellViewModelWrapper>(tv: UITableView, indexPath: IndexPath, model: C) -> UITableViewCell {
-  let cell = tv.dequeueReusableCell(withIdentifier: model.base.cellViewClass.identifier, for: indexPath)
-  guard var modeledCell = cell as? ModelledCell else { return cell }
-  modeledCell.cellModel = model.base
-  guard var expandableCell = cell as? ExpandableCell else { return cell }
-  expandableCell.setReload(with: tv)
-  return cell
 }
 
 // MARK: - TableViewControllerDelegateProxy

@@ -10,6 +10,7 @@ import RxDataSources
 
 // MARK: - IdentifiableCellViewModel
 
+/// A wrapper to deal with PATs like IdentifiableType and Hashable
 public protocol IdentifiableCellViewModel: CellViewModel {
   var identity: Int { get }
   func isEqual(to: IdentifiableCellViewModel) -> Bool
@@ -50,6 +51,33 @@ extension AnimatableCellViewModel: IdentifiableType, Equatable {
   }
   
   public static func ==(lhs: AnimatableCellViewModel, rhs: AnimatableCellViewModel) -> Bool {
+    return lhs._base.isEqual(to: rhs._base)
+  }
+}
+
+// MARK: - DiffableCellViewModel
+
+/// A wrapper for CellViewModel, that allows to use it with DiffableSectionModel
+@available(iOS 13.0, *)
+public struct DiffableCellViewModel: CellViewModelWrapper {
+  var base: CellViewModel {
+    return _base
+  }
+  
+  private let _base: IdentifiableCellViewModel
+  
+  init(base: IdentifiableCellViewModel) {
+    self._base = base
+  }
+}
+
+@available(iOS 13.0, *)
+extension DiffableCellViewModel: Hashable {
+  public func hash(into hasher: inout Hasher) {
+    _base.identity.hash(into: &hasher)
+  }
+  
+  public static func ==(lhs: DiffableCellViewModel, rhs: DiffableCellViewModel) -> Bool {
     return lhs._base.isEqual(to: rhs._base)
   }
 }
