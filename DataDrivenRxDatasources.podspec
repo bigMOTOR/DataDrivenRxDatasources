@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "DataDrivenRxDatasources"
-  s.version          = "3.2.0"
+  s.version          = "3.2.1"
   s.summary          = "MVVM abstraction boilerplate code over RxDataSources."
   s.description      = <<-DESC
   DataDrivenRxDatasources - MVVM abstraction boilerplate code over RxDataSources.
@@ -43,6 +43,6 @@ tableView.rx
 
   s.source_files = "Sources/DataDrivenRxDatasources/*.swift", "Sources/DataDrivenRxDatasources/**/*.swift"
                      
-  s.dependency 'RxSwift', '~> 6.0.0'
-  s.dependency 'RxDataSources', '~> 5.0.0'
+  s.dependency 'RxSwift', '~> 6.0'
+  s.dependency 'RxDataSources', '~> 5.0'
 end
