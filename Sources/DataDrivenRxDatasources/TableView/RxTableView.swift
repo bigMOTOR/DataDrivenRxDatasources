@@ -229,7 +229,9 @@ private final class TableViewControllerDelegateProxy<DataSource: ExtendedSection
       let model = try? _dataSource.model(at: indexPath) as? CellViewModelWrapper,
       let trailingModel = model.base as? TrailingSwipeableType
     else { return nil }
-    return UISwipeActionsConfiguration(actions: trailingModel.trailingSwipeActions.map(\.contextualAction))
+    let configuration = UISwipeActionsConfiguration(actions: trailingModel.trailingSwipeActions.map(\.contextualAction))
+    configuration.performsFirstActionWithFullSwipe = trailingModel.performsFirstActionWithFullSwipe
+    return configuration
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

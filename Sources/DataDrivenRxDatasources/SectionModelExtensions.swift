@@ -65,6 +65,13 @@ public protocol DeletableType {
 // Protocol for viewModel that provide and handles trailing swipe actions
 public protocol TrailingSwipeableType {
   var trailingSwipeActions: [SwipeAction] { get }
+  var performsFirstActionWithFullSwipe: Bool { get }
+}
+
+extension TrailingSwipeableType {
+  public var performsFirstActionWithFullSwipe: Bool {
+    return true
+  }
 }
 
 // Protocol for UITableViewCell to update constraints and redraw cell
