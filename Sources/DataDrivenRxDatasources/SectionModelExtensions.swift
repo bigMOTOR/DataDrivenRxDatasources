@@ -74,6 +74,20 @@ extension TrailingSwipeableType {
   }
 }
 
+// Protocol for viewModel that provides and handles ContextMenu call
+@available(iOS 13.0, *)
+public protocol ContextMenuInteractableType {
+  var contextMenuTitle: String { get }
+  var contextMenuActions: [ContextMenuAction] { get }
+}
+
+@available(iOS 13.0, *)
+extension ContextMenuInteractableType {
+  public var contextMenuTitle: String {
+    return ""
+  }
+}
+
 // Protocol for UITableViewCell to update constraints and redraw cell
 import UIKit.UITableView
 
