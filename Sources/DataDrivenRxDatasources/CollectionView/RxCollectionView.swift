@@ -102,5 +102,22 @@ private final class CollectionViewControllerDelegateProxy: NSObject, UICollectio
     }
     return false
   }
+  
+  @available(iOS 13.0, *)
+  func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    return (collectionView.cellForItem(at: indexPath) as? ModelledCollectionCell)
+      .flatMap(\.cellModel)
+      .flatMap { $0 as? ContextMenuInteractableType }
+      .flatMap { contextMenuInteractable -> UIContextMenuConfiguration? in
+        let contextActions = contextMenuInteractable.contextMenuActions.map(\.asUIAction)
+        switch contextActions.isEmpty {
+        case true:
+          return nil
+        case false:
+          return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { action in
+            UIMenu(title: contextMenuInteractable.contextMenuTitle, children: contextActions)
+          }
+        }
+      }
+  }
 }
-
