@@ -88,6 +88,9 @@ extension ContextMenuInteractableType {
   }
 }
 
+// Protocol for viewModel that enable drag tableview rows
+public protocol DragReorderedType {}
+
 // Protocol for UITableViewCell to update constraints and redraw cell
 import UIKit.UITableView
 
