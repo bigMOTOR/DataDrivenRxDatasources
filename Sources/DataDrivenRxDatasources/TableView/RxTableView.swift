@@ -132,7 +132,8 @@ private func _reloadDataSource<S>() -> RxTableViewSectionedReloadDataSource<Tabl
     configureCell: { (_, tv, indexPath, model) in _configureCell(tv: tv, indexPath: indexPath, model: model) },
     titleForHeaderInSection: _titleForHeaderInSection,
     titleForFooterInSection: _titleForFooterInSection,
-    canEditRowAtIndexPath: _canEditRowAtIndexPath
+    canEditRowAtIndexPath: _canEditRowAtIndexPath,
+    canMoveRowAtIndexPath: _canMoveRowAtIndexPath
   )
 }
 
@@ -142,7 +143,8 @@ private func _animatableDataSource<S>(animationConfiguration: AnimationConfigura
     configureCell: { (_, tv, indexPath, model) in _configureCell(tv: tv, indexPath: indexPath, model: model) },
     titleForHeaderInSection: _titleForHeaderInSection,
     titleForFooterInSection: _titleForFooterInSection,
-    canEditRowAtIndexPath: _canEditRowAtIndexPath
+    canEditRowAtIndexPath: _canEditRowAtIndexPath,
+    canMoveRowAtIndexPath: _canMoveRowAtIndexPath
   )
 }
 
@@ -185,9 +187,16 @@ private func _canEditRowAtIndexPath(dataSource: SectionedViewDataSourceType, ind
     return deletableType.onDeleted != nil
   case let trailingSwipeableType as TrailingSwipeableType:
     return trailingSwipeableType.trailingSwipeActions.count > 0
+  case is DragReorderedType:
+    return true
   default:
     return false
   }
+}
+
+private func _canMoveRowAtIndexPath(dataSource: SectionedViewDataSourceType, indexPath: IndexPath) -> Bool {
+  guard let model = try? dataSource.model(at: indexPath) as? CellViewModelWrapper else { return false }
+  return model.base is DragReorderedType
 }
 
 // MARK: - TableViewControllerDelegateProxy
@@ -242,6 +251,14 @@ private final class TableViewControllerDelegateProxy<DataSource: ExtendedSection
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return _sectionFooterModel(at: section)
       .flatMap(_headerFooterView(tableView: tableView))
+  }
+  
+  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    return .none
+  }
+  
+  func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+    return false
   }
   
   private func _sectionHeaderModel(at index: Int) -> HeaderFooterViewModel? {
