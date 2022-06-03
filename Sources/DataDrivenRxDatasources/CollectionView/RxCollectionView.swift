@@ -33,6 +33,16 @@ extension Reactive where Base: UICollectionView {
     ])
   }
   
+  // MARK: - Actions
+  public var itemMoved: ControlEvent<ItemMovedEvent> {
+    let source: Observable<ItemMovedEvent> = dataSource.methodInvoked(#selector(UICollectionViewDataSource.collectionView(_:moveItemAt:to:)))
+      .map { args in
+        return (try _castOrThrow(IndexPath.self, args[1]), try _castOrThrow(IndexPath.self, args[2]))
+      }
+    
+    return ControlEvent(events: source)
+  }
+  
   // MARK: - Cell Actions
   private func _bindActions() -> Disposable {
     let collectionView = base
@@ -73,14 +83,16 @@ private func _registerCells<S: SectionModelType>(for collectionView: UICollectio
 // MARK: - DataSources
 private func _reloadDataSource<S>() -> RxCollectionViewSectionedReloadDataSource<CollectionSectionModel<S>> {
   return RxCollectionViewSectionedReloadDataSource<CollectionSectionModel<S>>(
-    configureCell: { (_, cv, indexPath, model) in _configureCell(cv: cv, indexPath: indexPath, model: model) }
+    configureCell: { (_, cv, indexPath, model) in _configureCell(cv: cv, indexPath: indexPath, model: model) },
+    canMoveItemAtIndexPath: _canMoveRowAtIndexPath
   )
 }
 
 private func _animatableDataSource<S>(animationConfiguration: AnimationConfiguration) -> RxCollectionViewSectionedAnimatedDataSource<AnimatableCollectionSectionModel<S>> {
   return RxCollectionViewSectionedAnimatedDataSource<AnimatableCollectionSectionModel<S>>(
     animationConfiguration: animationConfiguration,
-    configureCell: { (_, cv, indexPath, model) in _configureCell(cv: cv, indexPath: indexPath, model: model) }
+    configureCell: { (_, cv, indexPath, model) in _configureCell(cv: cv, indexPath: indexPath, model: model) },
+    canMoveItemAtIndexPath: _canMoveRowAtIndexPath
   )
 }
 
@@ -92,7 +104,12 @@ private func _configureCell<C: CollectionCellViewModelWrapper>(cv: UICollectionV
   return cell
 }
 
-// MARK: - TableViewControllerDelegateProxy
+private func _canMoveRowAtIndexPath(dataSource: SectionedViewDataSourceType, indexPath: IndexPath) -> Bool {
+  guard let model = try? dataSource.model(at: indexPath) as? CollectionCellViewModelWrapper else { return false }
+  return model.base is DragReorderedType
+}
+
+// MARK: - CollectionViewControllerDelegateProxy
 private final class CollectionViewControllerDelegateProxy: NSObject, UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
     if
@@ -120,4 +137,13 @@ private final class CollectionViewControllerDelegateProxy: NSObject, UICollectio
         }
       }
   }
+}
+
+// Copy of RxCocoa func 'RxSwift/RxCocoa/RxCocoa.swift'
+private func _castOrThrow<T>(_ resultType: T.Type, _ object: Any) throws -> T {
+  guard let returnValue = object as? T else {
+    throw RxCocoaError.castingError(object: object, targetType: resultType)
+  }
+  
+  return returnValue
 }
