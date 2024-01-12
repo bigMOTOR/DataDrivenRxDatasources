@@ -8,6 +8,6 @@
 import Foundation
 import UIKit
 
-protocol DecoratableTableView where Self: UITableView {
+public protocol DecoratableTableView where Self: UITableView {
   func applyDecoration(for indexPath: IndexPath)
 }
