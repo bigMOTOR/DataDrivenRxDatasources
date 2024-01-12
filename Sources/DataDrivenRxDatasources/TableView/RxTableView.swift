@@ -261,6 +261,11 @@ private final class TableViewControllerDelegateProxy<DataSource: ExtendedSection
     return false
   }
   
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    guard let tableView = tableView as? DecoratableTableView else { return }
+    tableView.applyDecoration(for: indexPath)
+  }
+  
   private func _sectionHeaderModel(at index: Int) -> HeaderFooterViewModel? {
     return _dataSource.sectionModel(at: index)
       .flatMap { $0 as? SectionHeaderViewType }
