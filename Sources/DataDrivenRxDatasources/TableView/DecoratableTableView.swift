@@ -9,5 +9,5 @@ import Foundation
 import UIKit
 
 public protocol DecoratableTableView where Self: UITableView {
-  func applyDecoration(for indexPath: IndexPath)
+  func applyDecoration(for indexPath: IndexPath, to cell: UITableViewCell)
 }

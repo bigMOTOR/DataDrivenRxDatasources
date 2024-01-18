@@ -38,7 +38,7 @@ public struct AnimatableCellViewModel: CellViewModelWrapper {
   
   private let _base: IdentifiableCellViewModel
   
-  init(base: IdentifiableCellViewModel) {
+  public init(base: IdentifiableCellViewModel) {
     self._base = base
   }
 }
