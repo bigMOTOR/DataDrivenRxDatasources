@@ -163,7 +163,7 @@ private func _diffableDataSource<S>(tableView: UITableView, rowAnimation: UITabl
 
 // MARK: - Configurations
 private func _configureCell<C: CellViewModelWrapper>(tv: UITableView, indexPath: IndexPath, model: C) -> UITableViewCell {
-  let cell = tv.dequeueReusableCell(withIdentifier: model.base.cellViewClass.identifier, for: indexPath)
+  let cell = tv.dequeueReusableCell(withIdentifier: model.base.cellViewClass.identifier, for: indexPath)  
   guard var modeledCell = cell as? ModelledCell else { return cell }
   modeledCell.cellModel = model.base
   guard var expandableCell = cell as? ExpandableCell else { return cell }
@@ -263,7 +263,7 @@ private final class TableViewControllerDelegateProxy<DataSource: ExtendedSection
   
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     guard let tableView = tableView as? DecoratableTableView else { return }
-    tableView.applyDecoration(for: indexPath)
+    tableView.applyDecoration(for: indexPath, to: cell)
   }
   
   private func _sectionHeaderModel(at index: Int) -> HeaderFooterViewModel? {

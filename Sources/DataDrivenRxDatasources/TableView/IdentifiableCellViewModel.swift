@@ -26,6 +26,10 @@ protocol CellViewModelWrapper {
 
 public struct AnyCellViewModel: CellViewModelWrapper {
   let base: CellViewModel
+  
+  public init(base: CellViewModel) {
+    self.base = base
+  }
 }
 
 // MARK: - AnimatableCellViewModel
@@ -38,7 +42,7 @@ public struct AnimatableCellViewModel: CellViewModelWrapper {
   
   private let _base: IdentifiableCellViewModel
   
-  init(base: IdentifiableCellViewModel) {
+  public init(base: IdentifiableCellViewModel) {
     self._base = base
   }
 }
