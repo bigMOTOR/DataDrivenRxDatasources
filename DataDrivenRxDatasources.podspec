@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "DataDrivenRxDatasources"
-  s.version          = "3.5.2"
+  s.version          = "3.5.3"
   s.summary          = "MVVM abstraction boilerplate code over RxDataSources."
   s.description      = <<-DESC
   DataDrivenRxDatasources - MVVM abstraction boilerplate code over RxDataSources.
