@@ -22,6 +22,16 @@ extension Reactive where Base: UICollectionView {
     ])
   }
   
+  public func bind<S>(sections: Driver<[CollectionSectionModel<S>]>) -> Disposable where Base: CollectionViewFlowLayout {
+    return CompositeDisposable(disposables: [
+      sections
+        .do(onNext: _registerCells(for: base))
+        .drive(items(dataSource: _reloadDataSource())),
+      _addDelegate(FlowLayoutCollectionViewControllerDelegateProxy(collectionViewSizeForItemAt: base.collectionView(_:layout:sizeForItemAt:))),
+      _bindActions()
+    ])
+  }
+  
   // MARK: - Animatable
   public func bind<S>(sections: Driver<[AnimatableCollectionSectionModel<S>]>, animationConfiguration: AnimationConfiguration = AnimationConfiguration()) -> Disposable {
     return CompositeDisposable(disposables: [
@@ -29,6 +39,16 @@ extension Reactive where Base: UICollectionView {
         .do(onNext: _registerCells(for: base))
         .drive(items(dataSource: _animatableDataSource(animationConfiguration: animationConfiguration))),
       _addDelegate(),
+      _bindActions()
+    ])
+  }
+  
+  public func bind<S>(sections: Driver<[AnimatableCollectionSectionModel<S>]>, animationConfiguration: AnimationConfiguration = AnimationConfiguration()) -> Disposable where Base: CollectionViewFlowLayout {
+    return CompositeDisposable(disposables: [
+      sections
+        .do(onNext: _registerCells(for: base))
+        .drive(items(dataSource: _animatableDataSource(animationConfiguration: animationConfiguration))),
+      _addDelegate(FlowLayoutCollectionViewControllerDelegateProxy(collectionViewSizeForItemAt: base.collectionView(_:layout:sizeForItemAt:))),
       _bindActions()
     ])
   }
@@ -62,8 +82,7 @@ extension Reactive where Base: UICollectionView {
   }
   
   // MARK: - Add Delegate
-  private func _addDelegate() -> Disposable {
-    let delegate = CollectionViewControllerDelegateProxy()
+  private func _addDelegate(_ delegate: CollectionViewControllerDelegateProxy = CollectionViewControllerDelegateProxy()) -> Disposable {
     base.delegate = delegate
     return Disposables.create { [delegate] in _ = delegate}
   }
@@ -110,7 +129,7 @@ private func _canMoveRowAtIndexPath(dataSource: SectionedViewDataSourceType, ind
 }
 
 // MARK: - CollectionViewControllerDelegateProxy
-private final class CollectionViewControllerDelegateProxy: NSObject, UICollectionViewDelegate {
+private class CollectionViewControllerDelegateProxy: NSObject, UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
     if
       let modelledCell = collectionView.cellForItem(at: indexPath) as? ModelledCollectionCell,
@@ -139,6 +158,19 @@ private final class CollectionViewControllerDelegateProxy: NSObject, UICollectio
   }
 }
 
+// MARK: - CollectionViewControllerDelegateProxy + UICollectionViewDelegateFlowLayout
+private final class FlowLayoutCollectionViewControllerDelegateProxy: CollectionViewControllerDelegateProxy, UICollectionViewDelegateFlowLayout {
+  let collectionViewSizeForItemAt: (UICollectionView, UICollectionViewLayout, IndexPath) -> CGSize
+  
+  init(collectionViewSizeForItemAt: @escaping (UICollectionView, UICollectionViewLayout, IndexPath) -> CGSize) {
+    self.collectionViewSizeForItemAt = collectionViewSizeForItemAt
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return collectionViewSizeForItemAt(collectionView, collectionViewLayout, indexPath)
+  }
+}
+  
 // Copy of RxCocoa func 'RxSwift/RxCocoa/RxCocoa.swift'
 private func _castOrThrow<T>(_ resultType: T.Type, _ object: Any) throws -> T {
   guard let returnValue = object as? T else {
