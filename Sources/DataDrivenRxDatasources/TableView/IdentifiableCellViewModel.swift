@@ -36,7 +36,7 @@ public struct AnyCellViewModel: CellViewModelWrapper {
 
 /// A wrapper for CellViewModel, that allows to use it with AnimatableSectionModel 
 public struct AnimatableCellViewModel: CellViewModelWrapper {
-  var base: CellViewModel {
+  public var base: CellViewModel {
     return _base
   }
   
