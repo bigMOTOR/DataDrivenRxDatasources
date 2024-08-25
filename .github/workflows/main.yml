@@ -23,4 +23,4 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Run tests
-      run: xcodebuild test -scheme DataDrivenRxDatasources-Package -destination 'platform=iOS Simulator,name=iPhone 14,OS=latest' -enableCodeCoverage YES -resultBundlePath build/TestResults
+      run: xcodebuild test -scheme DataDrivenRxDatasources -destination 'platform=iOS Simulator,name=iPhone 14,OS=latest' -enableCodeCoverage YES -resultBundlePath build/TestResults
