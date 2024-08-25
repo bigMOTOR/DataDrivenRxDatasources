@@ -17,10 +17,10 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    # Runs a single command using the runners shell
-    - name: Generate xcodeproj
-      run: swift package generate-xcodeproj
+    # Install dependencies using Swift Package Manager
+    - name: Resolve Swift Package Manager Dependencies
+      run: swift package resolve
 
-    # Runs a set of commands using the runners shell
+    # Runs a single command using the runners shell
     - name: Run tests
-      run: xcodebuild test -destination 'name=iPhone 11' -scheme 'DataDrivenRxDatasources-Package'
+      run: xcodebuild test -scheme DataDrivenRxDatasources -destination 'platform=iOS Simulator,name=iPhone 11,OS=latest'
