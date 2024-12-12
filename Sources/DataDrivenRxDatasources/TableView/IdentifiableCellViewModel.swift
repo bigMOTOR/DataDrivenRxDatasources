@@ -25,7 +25,7 @@ protocol CellViewModelWrapper {
 // MARK: - AnyCellViewModel
 
 public struct AnyCellViewModel: CellViewModelWrapper {
-  let base: CellViewModel
+  public let base: CellViewModel
   
   public init(base: CellViewModel) {
     self.base = base
